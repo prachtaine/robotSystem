@@ -1,0 +1,383 @@
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RobotControl;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace RobotApp.ViewModel
+{
+    public class MotorViewModel : ViewModelBase, IDisposable
+    {
+        /// <summary>
+        /// The jointItem vm that this motor belongs to.
+        /// </summary>
+        /// <summary>
+        /// The <see cref="Controller" /> property's name.
+        /// </summary>
+        public const string JointItemPropertyName = "JointItem";
+
+        private Controller controller = null;
+
+        /// <summary>
+        /// The <see cref="Kp" /> property's name.
+        /// </summary>
+        public const string KpPropertyName = "Kp";
+
+        private byte kp = 10;
+
+        /// <summary>
+        /// The <see cref="AngleSetpoint" /> property's name.
+        /// </summary>
+        public const string AngleSetpointPropertyName = "AngleSetpoint";
+
+        private double angleSetpoint = 0;
+
+        /// <summary>
+        /// Sets and gets the AngleSetpoint property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double AngleSetpoint
+        {
+            get
+            {
+                return angleSetpoint;
+            }
+
+            set
+            {
+                if (angleSetpoint == value)
+                {
+                    return;
+                }
+
+                angleSetpoint = value;
+                Motor.Angle = value;
+                RaisePropertyChanged(AngleSetpointPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// Sets and gets the Kp property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public byte Kp
+        {
+            get
+            {
+                return kp;
+            }
+
+            set
+            {
+                if (kp == value)
+                {
+                    return;
+                }
+
+                kp = value;
+                Motor.Kp = value;
+                RaisePropertyChanged(KpPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// Sets and gets the JointItem property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public Controller Controller
+        {
+            get
+            {
+                return controller;
+            }
+
+            set
+            {
+                if (controller == value)
+                {
+                    return;
+                }
+
+                controller = value;
+                this.Motor.Controller = controller;
+                RaisePropertyChanged(JointItemPropertyName);
+            }
+        }
+        public Motor Motor { get; set; }
+
+        [XmlIgnore]
+        public ObservableDictionary<string, InputSignalViewModel> Sinks { get; set; }
+
+        public MotorViewModel()
+        {
+            Motor = new Motor();
+            Sinks = new ObservableDictionary<string, InputSignalViewModel>();
+            JogSpeed = 32;
+            JogForwardDown = new RelayCommand(() => { JogDirection = true; JogEnabled = true; });
+            JogForwardUp = new RelayCommand(() =>   { JogDirection = true; JogEnabled = false;});
+            JogReverseDown = new RelayCommand(() => { JogDirection = false; JogEnabled = true; });
+            JogReverseUp = new RelayCommand(() =>   { JogDirection = false; JogEnabled = false; });
+
+
+            Sinks.Add("AngleSetpoint", new InputSignalViewModel("AngleSetpoint", FriendlyName,
+                (value) =>
+                {
+                    AngleSetpoint = value;
+                }
+            ));
+
+
+            Sinks.Add("JogForward", new InputSignalViewModel("JogForward", FriendlyName,
+                (value) =>
+                {
+                    if (value > 0.5)
+                    {
+                        JogDirection = true;
+                        JogEnabled = true;
+                    }
+
+                    else
+                        JogEnabled = false;
+                }
+            ));
+
+            Sinks.Add("JogReverse", new InputSignalViewModel("JogReverse", FriendlyName,
+                (value) =>
+                {
+                    if (value > 0.5)
+                    {
+                        JogDirection = false;
+                        JogEnabled = true;
+                    }
+
+                    else
+                        JogEnabled = false;
+                }
+            ));
+
+            Sinks.Add("JogSpeed", new InputSignalViewModel("JogSpeed", FriendlyName,
+                (value) =>
+                {
+                    // ignore messages that are negative or bigger than 255;
+                    int speed = 0;
+                    if(value > 0)
+                    {
+                        if(value < 255.0)
+                        {
+                            speed = (int)Math.Round(value);
+                        }
+                    }
+
+                    JogSpeed = speed;
+                }
+            ));
+        }
+
+
+        public string DisplayName
+        {
+            get
+            {
+                return "Motor " + Id + " (" + FriendlyName + ")";
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="FriendlyName" /> property's name.
+        /// </summary>
+        public const string FriendlyNamePropertyName = "FriendlyName";
+
+        private string friendlyName = "";
+
+        /// <summary>
+        /// Sets and gets the FriendlyName property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public string FriendlyName
+        {
+            get
+            {
+                return friendlyName;
+            }
+
+            set
+            {
+                if (friendlyName == value)
+                {
+                    return;
+                }
+
+                friendlyName = value;
+                RaisePropertyChanged(FriendlyNamePropertyName);
+                RaisePropertyChanged("DisplayName");
+
+                // We have to tell our signal manager what our new name is
+                foreach(var sink in Sinks)
+                {
+                    sink.Value.ParentInstanceName = FriendlyName;
+                }
+            }
+        }
+
+        private void UpdateJogState()
+        {
+            if(JogEnabled)
+            {
+                Motor.Jog(JogSpeed, JogDirection);
+            }
+            else
+            {
+                Motor.Jog(0, false);
+            }
+        }
+
+        private int jogSpeed;
+        public int JogSpeed 
+        { 
+            get
+            {
+             return jogSpeed;   
+            }
+            set
+            {
+                if (value == jogSpeed)
+                    return;
+                jogSpeed = value;
+                RaisePropertyChanged("JogSpeed");
+                UpdateJogState();
+            }
+        }
+
+        /// <summary>
+        /// Sets and gets the EncoderCountsPerRevolution property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double EncoderCountsPerRevolution
+        {
+            get
+            {
+                return Motor.EncoderClicksPerRevolution;
+            }
+
+            set
+            {
+                if (Motor.EncoderClicksPerRevolution == value)
+                {
+                    return;
+                }
+
+                Motor.EncoderClicksPerRevolution = value;
+                RaisePropertyChanged("EncoderCountsPerRevolution");
+            }
+        }
+        
+        /// <summary>
+        /// The <see cref="JogDirection" /> property's name.
+        /// </summary>
+        public const string JogDirectionPropertyName = "JogDirection";
+
+        private bool jogDirection = false;
+
+        /// <summary>
+        /// Sets and gets the JogDirection property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public bool JogDirection
+        {
+            get
+            {
+                return jogDirection;
+            }
+
+            set
+            {
+                if (jogDirection == value)
+                {
+                    return;
+                }
+
+                jogDirection = value;
+                RaisePropertyChanged(JogDirectionPropertyName);
+                UpdateJogState();
+            }
+        }
+        
+        /// <summary>
+        /// The <see cref="JogEnabled" /> property's name.
+        /// </summary>
+        public const string JogEnabledPropertyName = "JogEnabled";
+
+        private bool jogEnabled = false;
+
+        /// <summary>
+        /// Sets and gets the JogEnabled property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public bool JogEnabled
+        {
+            get
+            {
+                return jogEnabled;
+            }
+
+            set
+            {
+                if (jogEnabled == value)
+                {
+                    return;
+                }
+
+                jogEnabled = value;
+                RaisePropertyChanged(JogEnabledPropertyName);
+                UpdateJogState();
+            }
+        }
+
+        public int Id
+        {
+            get { return Motor.Index; }
+            set { Motor.Index = value;
+            RaisePropertyChanged("Id");
+            }
+        }
+
+        [XmlIgnore]
+        public RelayCommand JogForwardDown { get; set; }
+        [XmlIgnore]
+        public RelayCommand JogForwardUp   { get; set; }
+
+        [XmlIgnore]
+        public RelayCommand JogReverseDown { get; set; }
+        [XmlIgnore]
+        public RelayCommand JogReverseUp   { get; set; }
+
+        public int ControlModeIndex
+        {
+            get
+            {
+                return (int)Motor.ControlMode;
+            }
+            set
+            {
+                Motor.ControlMode = (ControlMode)(value);
+                this.RaisePropertyChanged("ControlModeIndex");
+            }
+        }
+
+        public void Dispose()
+        {
+            // Let the SignalSinkRegistry know that we're going bye-bye!
+            foreach(var item in Sinks)
+            {
+                Messenger.Default.Send<Messages.UnregisterSignalSink>(new Messages.UnregisterSignalSink() { Sink = item.Value });
+            }
+            
+        }
+    }
+}

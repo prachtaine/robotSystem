@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kinematics</name>
+    </assembly>
+    <members>
+        <member name="M:Kinematics.Kinematic.GetJointAngles(Kinematics.Point3D)">
+            <summary>
+            Gets a list of joint angles from a three-dimensional position
+            </summary>
+            <param name="Position">The position to find the joint angles from</param>
+            <returns></returns>
+        </member>
+        <member name="M:Kinematics.Kinematic.getJointAngles(Kinematics.Point3D)">
+            <summary>
+            Implement this function, which is specific to the robot.
+            </summary>
+            <param name="Position"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Kinematics.Point3D">
+            <summary>
+            Represents a point in 3D space using Cartesian coordinates.
+            </summary>
+        </member>
+        <member name="M:Kinematics.TwoArmCoupledShoulder.getJointAngles(Kinematics.Point3D)">
+            <summary>
+            This returns an array of joint angles from an input XYZ position
+            </summary>
+            <param name="Position"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Kinematics.TwoArmCoupledShoulder.ShoulderOffset">
+            <summary>
+            Measurement in mm of shoulder offset from center plane
+            </summary>
+        </member>
+        <member name="P:Kinematics.TwoArmCoupledShoulder.LengthUpperArm">
+            <summary>
+            Measurement in mm of the upper arm length
+            </summary>
+        </member>
+        <member name="P:Kinematics.TwoArmCoupledShoulder.LengthForearm">
+            <summary>
+            Measurement in mm of the forearm from elbow to functional tip
+            </summary>
+        </member>
+    </members>
+</doc>

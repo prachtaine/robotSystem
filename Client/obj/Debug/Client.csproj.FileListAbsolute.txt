@@ -20,3 +20,6 @@ C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\GeomagicTouchRobotSys
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\Client\obj\Debug\Client.ClientForm.resources
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\Client\obj\Debug\Client.Properties.Resources.resources
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\Client\obj\Debug\Client.csproj.GenerateResource.Cache
+C:\Users\TATRC\Documents\APsource\Client\bin\Debug\Client.exe.config
+C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.exe
+C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.pdb

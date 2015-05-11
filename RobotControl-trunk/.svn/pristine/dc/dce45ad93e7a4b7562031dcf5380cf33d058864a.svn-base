@@ -1,0 +1,139 @@
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using System;
+namespace RobotApp.ViewModel
+{
+
+    /// <summary>
+    /// This class contains properties that a View can data bind to.
+    /// <para>
+    /// See http://www.galasoft.ch/mvvm
+    /// </para>
+    /// </summary>
+    public class InputSignalViewModel : ViewModelBase
+    {
+        Action<double> ValueReceived;
+
+        /// <summary>
+        /// Initializes a new instance of the SignalSink class.
+        /// </summary>
+        public InputSignalViewModel(string SinkName, string ParentInstanceName, Action<double> valueReceived)
+        {
+            this.SinkName = SinkName;
+            this.ParentInstanceName = ParentInstanceName;
+            this.ValueReceived = valueReceived;
+            Messenger.Default.Send<Messages.RegisterSignalSink>(new Messages.RegisterSignalSink() { Sink = this } );
+        }
+
+        /// <summary>
+        /// Provides a descriptive single-line text string for use in the UI
+        /// </summary>
+        public string DisplayName
+        {
+            get
+            {
+                return parentInstanceName + ":" + sinkName;
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="SinkName" /> property's name.
+        /// </summary>
+        public const string SinkNamePropertyName = "SinkName";
+
+        private string sinkName = "";
+
+        /// <summary>
+        /// Sets and gets the SinkName property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public string SinkName
+        {
+            get
+            {
+                return sinkName;
+            }
+
+            set
+            {
+                if (sinkName == value)
+                {
+                    return;
+                }
+
+                sinkName = value;
+
+                RaisePropertyChanged(SinkNamePropertyName);
+                RaisePropertyChanged("DisplayName");
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ParentInstanceName" /> property's name.
+        /// </summary>
+        public const string ParentInstanceNamePropertyName = "ParentInstanceName";
+
+        private string parentInstanceName = "";
+
+        /// <summary>
+        /// Sets and gets the UniqueName property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public string ParentInstanceName
+        {
+            get
+            {
+                return parentInstanceName;
+            }
+
+            set
+            {
+                if (parentInstanceName == value)
+                {
+                    return;
+                }
+
+                parentInstanceName = value;
+                RaisePropertyChanged(ParentInstanceNamePropertyName);
+                RaisePropertyChanged("DisplayName");
+            }
+        }
+
+
+        /// <summary>
+        /// The <see cref="Value" /> property's name.
+        /// </summary>
+        public const string ValuePropertyName = "Value";
+
+        private double _value = 0;
+
+        /// <summary>
+        /// Sets and gets the Value property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double Value
+        {
+            get
+            {
+                return _value;
+            }
+
+            set
+            {
+                if (_value == value)
+                {
+                    return;
+                }
+
+                _value = value;
+                RaisePropertyChanged(ValuePropertyName);
+                ValueReceived(_value);
+            }
+        }
+
+        public override string ToString()
+        {
+            return DisplayName;
+        }
+    }
+}

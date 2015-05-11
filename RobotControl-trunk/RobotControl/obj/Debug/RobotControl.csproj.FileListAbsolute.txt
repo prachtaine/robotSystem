@@ -1,0 +1,8 @@
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\bin\Debug\RobotControl.XML
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\bin\Debug\RobotControl.dll
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\bin\Debug\RobotControl.pdb
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\bin\Debug\GeomagicTouch.dll
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\bin\Debug\GeomagicTouch.pdb
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\obj\Debug\RobotControl.csprojResolveAssemblyReference.cache
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\obj\Debug\RobotControl.dll
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotControl\obj\Debug\RobotControl.pdb

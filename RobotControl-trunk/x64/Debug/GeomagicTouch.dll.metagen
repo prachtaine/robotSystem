@@ -1,0 +1,62 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly GeomagicTouch, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class GeomagicTouch.Device: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.ComponentModel.INotifyPropertyChanged
+  Properties:
+    Boolean IsInitialized 'get ' : 
+    System.String Name 'get ' : 
+    Boolean SetpointEnabled 'get set' : 
+    Double SetpointZ 'get set' : 
+    Double SetpointY 'get set' : 
+    Double SetpointX 'get set' : 
+    Boolean IsInInkwell 'get ' : 
+    Boolean Button4 'get ' : 
+    Boolean Button3 'get ' : 
+    Boolean Button2 'get ' : 
+    Boolean Button1 'get ' : 
+    Double Theta3 'get ' : 
+    Double Theta2 'get ' : 
+    Double Theta1 'get ' : 
+    Double Z   'get ' : 
+    Double Y   'get ' : 
+    Double X   'get ' : 
+  Events:
+    System.ComponentModel.PropertyChangedEventHandler PropertyChanged: SpecialName
+  Methods:
+    Start(): PrivateScope, Public, HideBySig
+    Stop(): PrivateScope, Public, HideBySig
+    Update(): PrivateScope, Public, HideBySig
+    get_X(): PrivateScope, Public, HideBySig, SpecialName
+    get_Y(): PrivateScope, Public, HideBySig, SpecialName
+    get_Z(): PrivateScope, Public, HideBySig, SpecialName
+    get_Theta1(): PrivateScope, Public, HideBySig, SpecialName
+    get_Theta2(): PrivateScope, Public, HideBySig, SpecialName
+    get_Theta3(): PrivateScope, Public, HideBySig, SpecialName
+    get_Button1(): PrivateScope, Public, HideBySig, SpecialName
+    get_Button2(): PrivateScope, Public, HideBySig, SpecialName
+    get_Button3(): PrivateScope, Public, HideBySig, SpecialName
+    get_Button4(): PrivateScope, Public, HideBySig, SpecialName
+    get_IsInInkwell(): PrivateScope, Public, HideBySig, SpecialName
+    get_SetpointX(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetpointX(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_SetpointY(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetpointY(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_SetpointZ(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetpointZ(Double): PrivateScope, Public, HideBySig, SpecialName
+    get_SetpointEnabled(): PrivateScope, Public, HideBySig, SpecialName
+    set_SetpointEnabled(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    add_PropertyChanged(PropertyChangedEventHandler): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    remove_PropertyChanged(PropertyChangedEventHandler): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_IsInitialized(): PrivateScope, Public, HideBySig, SpecialName

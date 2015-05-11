@@ -1,0 +1,464 @@
+﻿using GalaSoft.MvvmLight.Command;
+using RobotApp.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using GeomagicTouch;
+
+
+namespace RobotApp.Views.Plugins
+{
+    /// <summary>
+    /// Interaction logic for HapticWorkspace.xaml
+    /// </summary>
+    public partial class HapticWorkspace : PluginBase
+    {
+        private double x, y, z;
+        private double setX, setY, setZ;
+        private double forceX, forceY, forceZ;
+
+        public HapticWorkspace()
+        {
+            this.TypeName = "Haptic Workspace";
+            InitializeComponent();
+
+            Outputs.Add("SetX", new ViewModel.OutputSignalViewModel("SetX"));
+            Outputs.Add("SetY", new ViewModel.OutputSignalViewModel("SetY"));
+            Outputs.Add("SetZ", new ViewModel.OutputSignalViewModel("SetZ"));
+            Outputs.Add("ForceX", new ViewModel.OutputSignalViewModel("ForceX"));
+            Outputs.Add("ForceY", new ViewModel.OutputSignalViewModel("ForceY"));
+            Outputs.Add("ForceZ", new ViewModel.OutputSignalViewModel("ForceZ"));
+            Outputs.Add("EnableHaptics", new ViewModel.OutputSignalViewModel("EnableHaptics"));
+
+            Inputs.Add("X", new ViewModel.InputSignalViewModel("X", this.InstanceName,
+                (value) =>
+                {
+                    if (armSide == 2)
+                        x = -value;
+                    else
+                        x = value;
+                    if (armSide != 0)
+                    {
+                        Barriers();
+                        UpdateOutput();
+                    }
+                }));
+
+            Inputs.Add("Y", new ViewModel.InputSignalViewModel("Y", this.InstanceName,
+                (value) =>
+                {
+                    y = value;
+                    if (armSide != 0)
+                    {
+                        Barriers();
+                        UpdateOutput();
+                    }
+                }));
+
+            Inputs.Add("Z", new ViewModel.InputSignalViewModel("Z", this.InstanceName,
+                (value) =>
+                {
+                    z = value;
+                    if (armSide != 0)
+                    {
+                        Barriers();
+                        UpdateOutput();
+                    }
+                }));            
+        }
+
+        public void UpdateOutput()
+        {
+            Outputs["SetX"].Value = setX;
+            Outputs["SetY"].Value = setY;
+            Outputs["SetZ"].Value = setZ;
+
+            Outputs["ForceX"].Value = forceX;
+            Outputs["ForceY"].Value = forceY;
+            Outputs["ForceZ"].Value = forceZ;
+            
+            if(hapticsEnabled == true)
+                Outputs["EnableHaptics"].Value = 1;
+            else
+                Outputs["EnableHaptics"].Value = 0;
+        }
+
+        public void Barriers()
+        {
+            double Lmax = (upperLength + foreLength) * 0.95;
+            double minShoulderRadians = minShoulderTheta * Math.PI / 180;
+            double maxShoulderRadians = maxShoulderTheta * Math.PI / 180;
+            double minElbowRadians = minElbowTheta * Math.PI / 180;
+            double maxElbowRadians = maxElbowTheta * Math.PI / 180;
+            double radius;
+            double setScale;
+            double c = upperLength * Math.Sin(maxShoulderRadians);
+            double xShift = upperLength * Math.Cos(maxShoulderRadians);
+            double torusTheta = Math.Atan(y / z);
+            double yShift = c * Math.Sin(torusTheta);
+            double a = foreLength * 0.95;
+            double torusR;
+            double xMin = upperLength * Math.Sin(maxElbowRadians) - foreLength;
+            double sphereOneLimit = Lmax * Math.Sin(maxShoulderRadians);
+            double sphereThreeX = upperLength + Math.Cos(maxElbowRadians) * foreLength;
+            double sphereThreeY = Math.Sin(maxElbowRadians) * foreLength;
+            double sphereTwoR = Math.Sqrt(Math.Pow(sphereThreeX, 2) + Math.Pow(sphereThreeY, 2));
+            double phi = Math.Tan(z / x);
+
+            // Setpoints start on input coordinates
+            setX = x;
+            setY = y;
+            setZ = z;
+
+            radius = Math.Sqrt(Math.Pow(setX, 2) + Math.Pow(setY, 2) + Math.Pow(setZ, 2));
+            torusR = Math.Sqrt(Math.Pow(c - Math.Sqrt(Math.Pow(setY, 2) + Math.Pow((setX + xShift), 2)), 2) + Math.Pow(setZ, 2));
+            // Outside barriers
+            if ((radius > Lmax) && (x >= sphereOneLimit))   // Sphere 1 
+            {
+                setScale = Lmax / radius;
+                setX = setX * setScale;
+                setY = setY * setScale;
+                setZ = setZ * setScale;
+            }
+            if ((torusR > a) && (x < sphereOneLimit) && (radius > sphereTwoR))  // Torus
+            {
+                setScale = a / torusR;
+                setX = ((setX - xShift) * setScale) + xShift;
+                setY = ((setY - yShift) * setScale) + yShift;
+                setZ = ((setZ - c) * setScale) + c;
+            }
+            // Shpere 2, force inside outward
+            radius = Math.Sqrt(Math.Pow(setX, 2) + Math.Pow(setY, 2) + Math.Pow(setZ, 2));
+            if (radius < sphereTwoR)
+            {
+                setScale = sphereTwoR / radius;
+                setX = x * setScale;
+                setY = y * setScale;
+                setZ = z * setScale;
+            }
+            //// Move inside shoulder range
+            //if (phi < minShoulderRadians)
+            //{
+            //    double xzRadius = Math.Sqrt(Math.Pow(setX, 2) + Math.Pow(setZ, 2));
+            //    setX = xzRadius * Math.Cos(phi);
+            //    setZ = xzRadius * Math.Sin(phi);
+            //}
+            // Sphere 3, force inside outward
+            radius = Math.Sqrt(Math.Pow((setX - upperLength), 2) + Math.Pow(setY, 2) + Math.Pow(setZ, 2));
+            if ((radius < foreLength) && (x > sphereThreeX))
+            {
+                setScale = foreLength / radius;
+                setX = ((setX - upperLength) * setScale) + upperLength;
+                setY = setY * setScale;
+                setZ = setZ * setScale;
+            }
+
+            // Right Wall
+            //if (x > Lmax)
+            //    setX = Lmax;
+            // Left Wall
+            //if (setX < (xShift + foreLength))
+            //    setX = xShift + foreLength;
+            // Ceiling
+            if (setY > 0)
+                setY = 0;
+            // Back Wall
+            if (setZ < 0)
+                setZ = 0;
+
+            //forceX = Math.Pow((setX - x), 3) * forceGain;
+            //forceY = Math.Pow((setY - y), 3) * forceGain;
+            //forceZ = Math.Pow((z - setZ), 3) * forceGain;
+            if (armSide == 2)
+                forceX = (setX - x) * -forceGain;
+            else
+                forceX = (setX - x) * forceGain;
+            forceY = (setY - y) * forceGain;
+            forceZ = (z - setZ) * forceGain;
+        }
+
+        /// <summary>
+        /// The <see cref="ArmSide" /> property's name.
+        /// </summary>
+        public const string ArmSidePropertyName = "ArmSide";
+
+        private int armSide = 0;
+
+        /// <summary>
+        /// Sets and gets the ArmSide property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public int ArmSide
+        {
+            get
+            {
+                return armSide;
+            }
+
+            set
+            {
+                if (armSide == value)
+                {
+                    return;
+                }
+
+                armSide = value;
+                RaisePropertyChanged(ArmSidePropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="UpperLength" /> property's name.
+        /// </summary>
+        public const string UpperLengthPropertyName = "UpperLength";
+
+        private double upperLength = 68.58;
+
+        /// <summary>
+        /// Sets and gets the UpperLength property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double UpperLength
+        {
+            get
+            {
+                return upperLength;
+            }
+
+            set
+            {
+                if (upperLength == value)
+                {
+                    return;
+                }
+
+                upperLength = value;
+                RaisePropertyChanged(UpperLengthPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ForeLength" /> property's name.
+        /// </summary>
+        public const string ForeLengthPropertyName = "ForeLength";
+
+        private double foreLength = 96.55;
+
+        /// <summary>
+        /// Sets and gets the ForeLength property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double ForeLength
+        {
+            get
+            {
+                return foreLength;
+            }
+
+            set
+            {
+                if (foreLength == value)
+                {
+                    return;
+                }
+
+                foreLength = value;
+                RaisePropertyChanged(ForeLengthPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="MinShoulderTheta" /> property's name.
+        /// </summary>
+        public const string MinShoulderThetaPropertyName = "MinShoulderTheta";
+
+        private double minShoulderTheta = 0;
+
+        /// <summary>
+        /// Sets and gets the MinShoulderTheta property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double MinShoulderTheta
+        {
+            get
+            {
+                return minShoulderTheta;
+            }
+
+            set
+            {
+                if (minShoulderTheta == value)
+                {
+                    return;
+                }
+
+                minShoulderTheta = value;
+                RaisePropertyChanged(MinShoulderThetaPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="MaxShoulderTheta" /> property's name.
+        /// </summary>
+        public const string MaxShoulderThetaPropertyName = "MaxShoulderTheta";
+
+        private double maxShoulderTheta = 90;
+
+        /// <summary>
+        /// Sets and gets the MaxShoulderTheta property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double MaxShoulderTheta
+        {
+            get
+            {
+                return maxShoulderTheta;
+            }
+
+            set
+            {
+                if (maxShoulderTheta == value)
+                {
+                    return;
+                }
+
+                maxShoulderTheta = value;
+                RaisePropertyChanged(MaxShoulderThetaPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="MinElbowTheta" /> property's name.
+        /// </summary>
+        public const string MinElbowThetaPropertyName = "MinElbowTheta";
+
+        private double minElbowTheta = 0;
+
+        /// <summary>
+        /// Sets and gets the MinElbowTheta property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double MinElbowTheta
+        {
+            get
+            {
+                return minElbowTheta;
+            }
+
+            set
+            {
+                if (minElbowTheta == value)
+                {
+                    return;
+                }
+
+                minElbowTheta = value;
+                RaisePropertyChanged(MinElbowThetaPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="MaxElbowTheta" /> property's name.
+        /// </summary>
+        public const string MaxElbowThetaPropertyName = "MaxElbowTheta";
+
+        private double maxElbowTheta = 100;
+
+        /// <summary>
+        /// Sets and gets the MaxElbowTheta property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double MaxElbowTheta
+        {
+            get
+            {
+                return maxElbowTheta;
+            }
+
+            set
+            {
+                if (maxElbowTheta == value)
+                {
+                    return;
+                }
+
+                maxElbowTheta = value;
+                RaisePropertyChanged(MaxElbowThetaPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="HapticsEnabled" /> property's name.
+        /// </summary>
+        public const string HapticsEnabledPropertyName = "HapticsEnabled";
+
+        private bool hapticsEnabled = false;
+
+        /// <summary>
+        /// Sets and gets the HapticsEnabled property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public bool HapticsEnabled
+        {
+            get
+            {
+                return hapticsEnabled;
+            }
+
+            set
+            {
+                if (hapticsEnabled == value)
+                {
+                    return;
+                }
+
+                hapticsEnabled = value;
+                RaisePropertyChanged(HapticsEnabledPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="ForceGain" /> property's name.
+        /// </summary>
+        public const string ForceGainPropertyName = "ForceGain";
+
+        private double forceGain = 0.1;
+
+        /// <summary>
+        /// Sets and gets the ForceGain property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public double ForceGain
+        {
+            get
+            {
+                return forceGain;
+            }
+
+            set
+            {
+                if (forceGain == value)
+                {
+                    return;
+                }
+
+                forceGain = value;
+                RaisePropertyChanged(ForceGainPropertyName);
+            }
+        }
+
+    }
+}

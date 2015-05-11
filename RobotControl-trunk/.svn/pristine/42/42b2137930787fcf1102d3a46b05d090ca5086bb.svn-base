@@ -1,0 +1,168 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using System.Collections.Concurrent;
+using System.ComponentModel;
+using System.Runtime.Serialization;
+namespace RobotControl
+{
+    public class Robot : INotifyPropertyChanged
+    {
+        byte[] DataToSend;
+        byte[] ResponseBuffer = new byte[32];
+
+        bool waitingForResponse = false;
+
+        AutoResetEvent autoEvent = new AutoResetEvent(false);
+
+        bool IsAssociating { get; set; }
+        int AssocNumJoints = 0;
+        public ObservableConcurrentDictionary<uint, Controller>Controllers { get; set; }
+        public ObservableCollection<Motor> Motors { get; set; }
+
+        [IgnoreDataMember()]
+        private IPacketTransport com;
+        [IgnoreDataMember()]
+        public IPacketTransport Com
+        {
+            get { return com; }
+            set {
+                if(com != value)
+                {
+                    if(com != null)
+                        com.DataReceived -= Com_DataReceived;
+
+                    com = value; 
+                    com.DataReceived += Com_DataReceived;
+                    if (PropertyChanged != null)
+                        PropertyChanged(this, new PropertyChangedEventArgs("Com"));
+                }
+            }
+        }
+        
+        System.Timers.Timer timer = new System.Timers.Timer(100);
+        public Robot()
+        {
+            Controllers = new ObservableConcurrentDictionary<uint, Controller>();
+            Motors = new ObservableCollection<Motor>();
+            timer.Elapsed += timer_Elapsed;
+
+        }
+
+        public void StartUpdates()
+        {
+            timer.Start();
+        }
+
+        public void StopUpdates()
+        {
+            timer.Stop();
+        }
+
+        async void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            foreach(var joint in Controllers)
+            {
+                await joint.Value.GetStatus();
+            }
+        }
+
+        void Com_DataReceived(byte[] data)
+        {
+            if (waitingForResponse)
+            {
+                Array.Copy(data, ResponseBuffer, data.Length);
+                autoEvent.Set();
+            }
+            else
+            {
+                uint address = BitConverter.ToUInt32(data, 0);
+                JointCommands response = (JointCommands)data[4];
+                if (response == JointCommands.Associate)
+                {
+                    if (!Controllers.ContainsKey(address))
+                    {
+                        Controllers.Add(address, new Controller() { Robot = this, Id = address });
+                        if (Controllers.Count() >= AssocNumJoints)
+                            IsAssociating = false;
+                    }
+                }
+            }
+        }
+
+        public async Task<byte[]> RequestData(JointCommands command, Controller joint, byte[] payload = null)
+        {
+            if (Com == null)
+                return null;
+            Task<byte[]> SendCommandTask = Task<byte[]>.Run<byte[]>(
+                () => {
+                    SendCommand(command, joint, payload);
+                    waitingForResponse = true;
+                    autoEvent.WaitOne(10000);
+                    waitingForResponse = false;
+                    return ResponseBuffer;
+                }
+                );
+           byte[] data = await SendCommandTask;
+           return data;
+        }
+
+        public void SendCommand(JointCommands command, Controller joint = null, byte[] payload = null)
+        {
+            if (Com == null)
+                return;
+            int numBytesToSend = 5; // joint address (4) + command (1)
+            if (payload != null)
+                numBytesToSend += payload.Length;
+
+            byte[] buffer = new byte[numBytesToSend];
+            uint address;
+            if (joint == null)
+            {
+                address = 0; // broadcast mode
+            }
+            else
+            {
+                address = joint.Id;
+            }
+
+            // Address
+            byte[] addressBytes = BitConverter.GetBytes(address);
+            // We don't really care if our int addresses are "correct" or not, since they're just bits.
+            //if(BitConverter.IsLittleEndian)
+            //   addressBytes.Reverse();
+            Array.Copy(addressBytes, buffer, 4);
+
+            // Command
+            buffer[4] = (byte)command;
+
+            if (payload != null)
+            {
+                Array.Copy(payload, 0, buffer, 5, payload.Length);
+            }
+            Com.Send(buffer);
+        }
+        /// <summary>
+        /// This command discovers all the joints
+        /// </summary>
+        /// <param name="numJoints">The number of joints to wait for before quitting</param>
+        public void DiscoverControllers()
+        {
+            SendCommand(JointCommands.Associate);
+        }
+
+        internal void Home(uint p, int index)
+        {
+            
+        }
+        
+        [field: NonSerializedAttribute()] 
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+}

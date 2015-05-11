@@ -1,0 +1,74 @@
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using RobotControl;
+using System;
+using System.Collections.ObjectModel;
+using System.IO.Ports;
+using System.Collections.Specialized;
+namespace RobotApp.ViewModel
+{
+/// <summary>
+/// This is the main logic for the app
+/// </summary>
+    public class MainViewModel : ViewModelBase
+    {
+        /// <summary>
+        /// This static property returns a reference to the MainViewModel so that any other ViewModel can access it.
+        /// </summary>
+        public static MainViewModel Instance { get { return instance;  } }
+        static MainViewModel instance;
+
+        /// <summary>
+        /// Robot data model
+        /// </summary>
+        public Robot Robot { get; set; }
+        
+       
+        /// <summary>
+        /// Collection of view models for the Motors
+        /// </summary>
+        public ObservableCollection<MotorViewModel> Motors { get; set; }
+
+        public SignalSinkRegistryViewModel InputSignalRegistry { get; set; }
+        
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel()
+        {
+            instance = this; // this sets the static Instance property to this instance.
+            Robot = new Robot();
+
+            // This lets us know what's going on with the Robot's internal Joint collection.
+            Robot.Controllers.CollectionChanged += Controllers_CollectionChanged;
+
+            InputSignalRegistry = new ViewModel.SignalSinkRegistryViewModel();
+        }
+
+        /// <summary>
+        /// This will create a new JointItemViewModel whenever we get a new joint (say, when we run ScanForJoints())
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void Controllers_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Controller controller;
+            switch(e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    controller = e.NewItems[0] as Controller;
+                    if (controller != null)
+                        Messenger.Default.Send<Messages.ControllerAdded>(new Messages.ControllerAdded() { AddedController = controller });
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// This sends out a discovery message that instructs the motor driver boards to report their ID.
+        /// </summary>
+        public void ScanForControllers()
+        {
+            Robot.DiscoverControllers();
+        }
+    }
+}

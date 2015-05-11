@@ -1,0 +1,5 @@
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\Kinematics\bin\Debug\Kinematics.XML
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\Kinematics\bin\Debug\Kinematics.dll
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\Kinematics\bin\Debug\Kinematics.pdb
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\Kinematics\obj\Debug\Kinematics.dll
+C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\Kinematics\obj\Debug\Kinematics.pdb

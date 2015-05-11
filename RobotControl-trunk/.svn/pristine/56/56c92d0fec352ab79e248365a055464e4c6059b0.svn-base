@@ -1,0 +1,144 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using RobotControl;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Media;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+namespace RobotApp.ViewModel
+{
+    public class ControllerViewModel : ViewModelBase
+    {
+        public Controller Controller {get; set;}
+
+        public ObservableCollection<MotorViewModel> Motors { get; set; }
+
+        int counter = 0;
+
+        public ControllerViewModel()
+        {
+            
+        }
+
+        public ControllerViewModel(Controller controller)
+        {
+            Controller = controller;
+            Motors = new ObservableCollection<MotorViewModel>();
+        }
+
+        private RelayCommand deleteMotorCommand;
+
+        /// <summary>
+        /// Gets the DeleteMotorCommand.
+        /// </summary>
+        public RelayCommand DeleteMotorCommand
+        {
+            get
+            {
+                return deleteMotorCommand
+                    ?? (deleteMotorCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (!DeleteMotorCommand.CanExecute(null))
+                        {
+                            return;
+                        }
+
+                        Motors.Last().Dispose();
+                        Motors.Remove(Motors.Last());
+                        counter--;
+                    },
+                    () => true));
+            }
+        }
+
+        private RelayCommand addMotorCommand;
+
+        /// <summary>
+        /// Gets the AddMotorCommand.
+        /// </summary>
+        public RelayCommand AddMotorCommand
+        {
+            get
+            {
+                return addMotorCommand
+                    ?? (addMotorCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (!AddMotorCommand.CanExecute(null))
+                        {
+                            return;
+                        }
+
+                        Debug.Print("Add new motor");
+                        var mvm = new MotorViewModel() { Controller = this.Controller };
+                        mvm.Id = counter++;
+                        Motors.Add(mvm);
+                    },
+                    () => true));
+            }
+        }
+
+        private RelayCommand deleteCommand;
+
+        /// <summary>
+        /// Gets the DeleteCommand.
+        /// </summary>
+        public RelayCommand DeleteCommand
+        {
+            get
+            {
+                return deleteCommand
+                    ?? (deleteCommand = new RelayCommand(
+                    () =>
+                    {
+                        if (!DeleteCommand.CanExecute(null))
+                        {
+                            return;
+                        }
+                        Messenger.Default.Send<Messages.RemoveController>(new Messages.RemoveController() { ControllerToRemove = this });
+
+                    },
+                    () => true));
+            }
+        }
+
+        
+
+        public uint Id { get { return Controller.Id; } }
+
+        public string IdString { get { return "Address: " + Controller.Id.ToString(); } }
+
+        public bool LedIsEnabled
+        {
+            get { return Controller.IdentificationLedIsEnabled; }
+            set { Controller.IdentificationLedIsEnabled = value; }
+        }
+
+
+
+        public string FriendlyName
+        {
+            get 
+            {
+                if (Controller.FriendlyName != null && Controller.FriendlyName.Length > 0)
+                    return Controller.FriendlyName;
+                else
+                    return "<No name>";
+            }
+            set 
+            {
+                Controller.FriendlyName = value;
+                this.RaisePropertyChanged("FriendlyName");
+            }
+        }
+
+
+
+    }
+}

@@ -20,3 +20,6 @@ C:\Users\Jordan\Desktop\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\obj\De
 C:\Users\Jordan\Desktop\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.MasterForm.resources
 C:\Users\Jordan\Desktop\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.Properties.Resources.resources
 C:\Users\Jordan\Desktop\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\obj\Debug\MasterController.csproj.GenerateResource.Cache
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\GeomagicTouchRobotSystem.exe.config
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.exe
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.pdb

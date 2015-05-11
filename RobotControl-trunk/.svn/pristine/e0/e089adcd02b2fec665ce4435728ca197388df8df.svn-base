@@ -1,0 +1,149 @@
+#include "stdafx.h"
+#include "NativeDevice.h"
+#include <Windows.h>
+#include <HD/hd.h>
+#include <stdio.h>
+#include <string>
+
+using namespace std;
+
+int NativeDevice::schedulerClients = 0;
+
+NativeDevice::NativeDevice(string DeviceName)
+{
+	name = DeviceName;
+	deviceInitialized = false;
+	while(HD_DEVICE_ERROR(hdGetError()));
+	handle = hdInitDevice(name.c_str());
+	servoLoopHandle = NULL;
+	HDErrorInfo error;
+	if (HD_DEVICE_ERROR(error = hdGetError()))
+	{
+		HDstring stringError = hdGetErrorString(error.errorCode);
+		printf("Error in Initialization");
+	}
+	else {
+		deviceInitialized = true;
+		CallbackDataObject = new GetUpdateCallbackData();
+		CallbackDataObject->Handle = this->handle;
+	}
+}
+
+void NativeDevice::Start()
+{
+	if (!deviceInitialized)
+		return;
+
+	servoLoopHandle = hdScheduleAsynchronous(GetUpdateCallback, CallbackDataObject, HD_DEFAULT_SCHEDULER_PRIORITY);
+	servoLoopRegistered = true;
+
+
+	// we're the first one here! start the scheduler
+	if (schedulerClients == 0) 
+	{
+		hdSetSchedulerRate(500);
+		HDErrorInfo error;
+		if (HD_DEVICE_ERROR(error = hdGetError()))
+		{
+			HDstring stringError = hdGetErrorString(error.errorCode);
+			printf("Error in Initialization");
+		}
+
+		hdStartScheduler();
+		if (HD_DEVICE_ERROR(error = hdGetError()))
+		{
+			HDstring stringError = hdGetErrorString(error.errorCode);
+			printf("Error in Initialization");
+		}
+	}
+	schedulerClients++;
+}
+
+/// This is the synchronous callback that's used to get the current position/angles/buttons
+/// that we'll push out of the class.
+///
+/// Remarks: This is a static function that's "shared" by any instance of this.
+/// DO NOT attempt to read/write any instance variables directly! Instead, add them to
+/// the CallbackData struct, which will get passed to this function.
+HDCallbackCode HDCALLBACK NativeDevice::GetUpdateCallback(void *pUserData)
+{
+	GetUpdateCallbackData *Data = static_cast<GetUpdateCallbackData *>(pUserData);
+	hdBeginFrame(Data->Handle);
+	HDErrorInfo error;
+	while (HD_DEVICE_ERROR(error = hdGetError()))
+	{
+		HDstring stringError = hdGetErrorString(error.errorCode);
+		printf("Error in Initialization");
+	}
+	hdMakeCurrentDevice(Data->Handle);
+
+	while (HD_DEVICE_ERROR(error = hdGetError()))
+	{
+		HDstring stringError = hdGetErrorString(error.errorCode);
+		printf("Error in Initialization");
+	}
+	hdGetDoublev(HD_CURRENT_POSITION, Data->Position);
+	hdGetDoublev(HD_CURRENT_GIMBAL_ANGLES, Data->GimbalAngles);
+	hdGetBooleanv(HD_CURRENT_INKWELL_SWITCH, &Data->InkwellSwitch);
+	hdGetIntegerv(HD_CURRENT_BUTTONS, &Data->Buttons);
+	hdEndFrame(Data->Handle);
+
+	if (Data->ForceEnabled)
+	{
+		// calculate force setpoints from Data
+		double xSetpoint = Data->Setpoint[0];
+		// ...
+	}
+
+
+	while (HD_DEVICE_ERROR(error = hdGetError()))
+	{
+		HDstring stringError = hdGetErrorString(error.errorCode);
+		printf("Error in Initialization");
+	}
+	
+	return HD_CALLBACK_CONTINUE;
+}
+
+void NativeDevice::UpdateSetpoint()
+{
+	CallbackDataObject->Setpoint[0] = SetpointX;
+	CallbackDataObject->Setpoint[1] = SetpointY;
+	CallbackDataObject->Setpoint[2] = SetpointZ;
+	CallbackDataObject->ForceEnabled = SetpointEnabled;
+
+}
+
+void NativeDevice::Update()
+{
+	if (!deviceInitialized) return;
+	if (!servoLoopRegistered) return;
+	X = CallbackDataObject->Position[0];
+	Y = CallbackDataObject->Position[1];
+	Z = CallbackDataObject->Position[2];
+	Theta1 = CallbackDataObject->GimbalAngles[0];
+	Theta2 = CallbackDataObject->GimbalAngles[1];
+	Theta3 = CallbackDataObject->GimbalAngles[2];
+	Button1 = CallbackDataObject->Buttons & HD_DEVICE_BUTTON_1;
+	Button2 = CallbackDataObject->Buttons & HD_DEVICE_BUTTON_2;
+	Button3 = CallbackDataObject->Buttons & HD_DEVICE_BUTTON_3;
+	Button4 = CallbackDataObject->Buttons & HD_DEVICE_BUTTON_4;
+	InkwellSwitch = CallbackDataObject->InkwellSwitch;
+}
+
+void NativeDevice::Stop()
+{
+	if (servoLoopHandle != NULL)
+		hdUnschedule(servoLoopHandle);
+
+	schedulerClients--;
+	if (schedulerClients == 0) // we're the last one here.
+		hdStopScheduler();
+	
+	hdDisableDevice(this->handle);
+}
+
+NativeDevice::~NativeDevice()
+{
+
+}

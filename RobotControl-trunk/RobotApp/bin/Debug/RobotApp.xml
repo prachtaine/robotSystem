@@ -1,0 +1,1223 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RobotApp</name>
+    </assembly>
+    <members>
+        <member name="T:RobotApp.Pages.Connection">
+            <summary>
+            Interaction logic for Connection.xaml
+            </summary>
+            <summary>
+            Connection
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.Connection.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.Control">
+            <summary>
+            Interaction logic for Control.xaml
+            </summary>
+            <summary>
+            Control
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.Control.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.DataView">
+            <summary>
+            Interaction logic for DataViewPage.xaml
+            </summary>
+            <summary>
+            DataView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.DataView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.GraphicalView">
+            <summary>
+            Interaction logic for GraphicalViewPage.xaml
+            </summary>
+            <summary>
+            GraphicalView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.GraphicalView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.ControllerConfiguration">
+            <summary>
+            Interaction logic for JointDetection.xaml
+            </summary>
+            <summary>
+            ControllerConfiguration
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.ControllerConfiguration.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.PluginConfiguration">
+            <summary>
+            Interaction logic for KinematicConfiguration.xaml
+            </summary>
+            <summary>
+            PluginConfiguration
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.PluginConfiguration.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Pages.Settings">
+            <summary>
+            Interaction logic for Settings.xaml
+            </summary>
+            <summary>
+            Settings
+            </summary>
+        </member>
+        <member name="M:RobotApp.Pages.Settings.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.Plugins.EnableDisablePluginViewModel">
+            <summary>
+            This class contains properties that a View can data bind to.
+            <para>
+            See http://www.galasoft.ch/mvvm
+            </para>
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.PluginViewModelBase.TypeNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.PluginViewModelBase.TypeName"/> property's name.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.PluginViewModelBase.TypeName">
+            <summary>
+            Sets and gets the TypeName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.PluginViewModelBase.InstanceName">
+            <summary>
+            Sets and gets the InstanceName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.Plugins.EnableDisablePluginViewModel.InstanceNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.Plugins.EnableDisablePluginViewModel.InstanceName"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.Plugins.EnableDisablePluginViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the EnableDisableViewModel class.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.Plugins.EnableDisablePluginViewModel.InstanceName">
+            <summary>
+            Sets and gets the InstanceName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.PluginConfigurationViewModel">
+            <summary>
+            This is the ViewModel associated with the PluginConfiguration page.
+            </summary>
+            <remarks>
+            <para>
+            To add a new Plugin Controller, you'll need to create a new view model in ViewModels\PluginControllers.
+            Derive your class from <see cref="!:PluginControllerViewModelBase"/>
+            </para>
+            </remarks>
+        </member>
+        <member name="P:RobotApp.ViewModel.PluginConfigurationViewModel.DeletePluginCommand">
+            <summary>
+            Gets the DeletePluginCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.PluginConfigurationViewModel.AddPluginCommand">
+            <summary>
+            Gets the AddPlugin command.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.ControllerConfigurationViewModel.LoadCommand">
+            <summary>
+            Gets the LoadCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.ControllerConfigurationViewModel.SaveCommand">
+            <summary>
+            Gets the SaveCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.ControllerViewModel.DeleteMotorCommand">
+            <summary>
+            Gets the DeleteMotorCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.ControllerViewModel.AddMotorCommand">
+            <summary>
+            Gets the AddMotorCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.ControllerViewModel.DeleteCommand">
+            <summary>
+            Gets the DeleteCommand.
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.JointViewModel">
+            <summary>
+            This view model describes a physical joint on the robot
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.JointViewModel.NamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.JointViewModel.Name"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.JointViewModel.AnglePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.JointViewModel.Angle"/> property's name.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.JointViewModel.Name">
+            <summary>
+            Sets and gets the Name property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.JointViewModel.Angle">
+            <summary>
+            Sets and gets the Angle property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.MainViewModel">
+            <summary>
+            This is the main logic for the app
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MainViewModel.RobotPropertyName">
+            <summary>
+            Robot data model
+            </summary>
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MainViewModel.Robot"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.MainViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the MainViewModel class.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.MainViewModel.RobotControllers_CollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)">
+            <summary>
+            This will create a new JointItemViewModel whenever we get a new joint (say, when we run ScanForJoints())
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:RobotApp.ViewModel.MainViewModel.ScanForControllers">
+            <summary>
+            This sends out a discovery message that instructs the motor driver boards to report their ID.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.MainViewModel.LoadData">
+            <summary>
+            Gets the LoadCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MainViewModel.Instance">
+            <summary>
+            This static property returns a reference to the MainViewModel so that any other ViewModel can access it.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MainViewModel.Robot">
+            <summary>
+            Sets and gets the Robot property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MainViewModel.Controllers">
+            <summary>
+            Collection of view models for the Joints
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MainViewModel.Motors">
+            <summary>
+            Collection of view models for the Motors
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.JointItemPropertyName">
+            <summary>
+            The jointItem vm that this motor belongs to.
+            </summary>
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.Controller"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.KpPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.Kp"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.AngleSetpointPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.AngleSetpoint"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.FriendlyNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.FriendlyName"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.JogDirectionPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.JogDirection"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.JogEnabledPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.MotorViewModel.JogEnabled"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.MotorViewModel.encoderCountsPerRevolution">
+            <summary>
+            Sets and gets the EncoderCountsPerRevolution property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.AngleSetpoint">
+            <summary>
+            Sets and gets the AngleSetpoint property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.Kp">
+            <summary>
+            Sets and gets the Kp property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.Controller">
+            <summary>
+            Sets and gets the JointItem property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogForwardUp">
+            <summary>
+            Gets the JogForwardUp.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogForwardDown">
+            <summary>
+            Gets the MyCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogReverseUp">
+            <summary>
+            Gets the JogReverseUp.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogReverseDown">
+            <summary>
+            Gets the JogReverseDown.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.FriendlyName">
+            <summary>
+            Sets and gets the FriendlyName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogDirection">
+            <summary>
+            Sets and gets the JogDirection property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.MotorViewModel.JogEnabled">
+            <summary>
+            Sets and gets the JogEnabled property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.SignalSinkSelectorViewModel">
+            <summary>
+            This class contains properties that a View can data bind to.
+            <para>
+            See http://www.galasoft.ch/mvvm
+            </para>
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.SignalSinkSelectorViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the SignalSinkSelectorViewModel class.
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.InputSignalViewModel">
+            <summary>
+            This class contains properties that a View can data bind to.
+            <para>
+            See http://www.galasoft.ch/mvvm
+            </para>
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.InputSignalViewModel.SinkNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.InputSignalViewModel.SinkName"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.InputSignalViewModel.ParentInstanceNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.InputSignalViewModel.ParentInstanceName"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.InputSignalViewModel.ValuePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.InputSignalViewModel.Value"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.InputSignalViewModel.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the SignalSink class.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.InputSignalViewModel.DisplayName">
+            <summary>
+            Provides a descriptive single-line text string for use in the UI
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.InputSignalViewModel.SinkName">
+            <summary>
+            Sets and gets the SinkName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.InputSignalViewModel.ParentInstanceName">
+            <summary>
+            Sets and gets the UniqueName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.InputSignalViewModel.Value">
+            <summary>
+            Sets and gets the Value property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.SignalSinkRegistryViewModel">
+            <summary>
+            This class contains properties that a View can data bind to.
+            <para>
+            See http://www.galasoft.ch/mvvm
+            </para>
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.SignalSinkRegistryViewModel.#ctor">
+            <summary>
+            Initializes a new instance of the SignalSinkRegistry class.
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.OutputSignalViewModel">
+            <summary>
+            This class contains properties that a View can data bind to.
+            <para>
+            See http://www.galasoft.ch/mvvm
+            </para>
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.OutputSignalViewModel.ValuePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.OutputSignalViewModel.Value"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.OutputSignalViewModel.SourceNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.ViewModel.OutputSignalViewModel.SourceName"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.OutputSignalViewModel.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the SignalSource class.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.OutputSignalViewModel.Value">
+            <summary>
+            Sets and gets the Value property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.OutputSignalViewModel.RemoveSignalSinkCommand">
+            <summary>
+            Gets the RemoveSignalSinkCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.OutputSignalViewModel.AddSignalSinkCommand">
+            <summary>
+            Gets the MyCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.OutputSignalViewModel.SourceName">
+            <summary>
+            Sets and gets the SourceName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.ViewModel.OutputSignalViewModel.DisplayText">
+            <summary>
+            Sets and gets the DisplayText property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="F:RobotApp.ViewModel.SettingsAppearanceViewModel.FontSmall">
+            <summary>
+            Initializes a new instance of the SettingsViewModel class.
+            </summary>
+        </member>
+        <member name="T:RobotApp.ViewModel.ViewModelLocator">
+            <summary>
+            This class contains static references to all the view models in the
+            application and provides an entry point for the bindings.
+            </summary>
+        </member>
+        <member name="M:RobotApp.ViewModel.ViewModelLocator.#ctor">
+            <summary>
+            Initializes a new instance of the ViewModelLocator class.
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.ControllerItemView">
+            <summary>
+            ControllerItemView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.ControllerItemView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.ControllerListItemView">
+            <summary>
+            Interaction logic for JointListItemView.xaml
+            </summary>
+            <summary>
+            ControllerListItemView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.ControllerListItemView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.AccelerationLimits">
+            <summary>
+            Interaction logic for AccelerationLimits.xaml
+            </summary>
+            <summary>
+            AccelerationLimits
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.PluginBase.PluginAreaPropertyName">
+            <summary>
+            The <see cref="!:PluginArea"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.PluginBase.TypeNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.PluginBase.TypeName"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.PluginBase.InstanceNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.PluginBase.InstanceName"/> property's name.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.PluginBase.Outputs">
+            <summary>
+            This is the collection of signal source view models that will appear in the plugin GUI.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.PluginBase.TypeName">
+            <summary>
+            Sets and gets the TypeName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.PluginBase.DisplayTitle">
+            <summary>
+            Returns "[TypeName] Configuration" -- which is used in the title block.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.PluginBase.InstanceName">
+            <summary>
+            Sets and gets the InstanceName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.AccelerationLimits.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.Clutch">
+            <summary>
+            Interaction logic for Clutch.xaml
+            </summary>
+            <summary>
+            Clutch
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.Clutch.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.Clutch.ResetOffsetsCommand">
+            <summary>
+            Gets the ResetOffsetsCommand.
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.EnableDisablePluginView">
+            <summary>
+            Interaction logic for EnableDisablePluginView.xaml
+            </summary>
+            <summary>
+            EnableDisablePluginView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.EnableDisablePluginView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.GeomagicTouch">
+            <summary>
+            Interaction logic for GeomagicTouchConfigurationView.xaml
+            </summary>
+            <summary>
+            GeomagicTouch
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.GeomagicTouch.DevicePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.GeomagicTouch.Device"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.GeomagicTouch.SelectedDeviceNamePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.GeomagicTouch.SelectedDeviceName"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.GeomagicTouch.ConnectButtonTextPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.GeomagicTouch.ConnectButtonText"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.GeomagicTouch.PostLoadSetup">
+            <summary>
+            This function is manually called at the end of the constructor (below) as well as automatically getting called after deserialization.
+            Place any code in here that you want executed after deserialization or construction.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.GeomagicTouch.#ctor">
+            <summary>
+            Create a new GeomagicTouch. 
+            
+            This function only runs when creating new instances of this class -- it does *not* run when instances of this class are deserialized.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.GeomagicTouch.GetGeomagicDevices">
+            <summary>
+            Gets a list of Geomagic devices
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.GeomagicTouch.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.GeomagicTouch.Device">
+            <summary>
+            Sets and gets the Device property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.GeomagicTouch.SelectedDeviceName">
+            <summary>
+            Sets and gets the SelectedDeviceName property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.GeomagicTouch.ConnectButtonText">
+            <summary>
+            Sets and gets the ConnectButtonText property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.GeomagicTouch.ConnectCommand">
+            <summary>
+            Gets the ConnectCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.GeomagicTouch.StartCommand">
+            <summary>
+            Gets the StartCommand.
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.MotorItemView">
+            <summary>
+            Interaction logic for MotorItemView.xaml
+            </summary>
+            <summary>
+            MotorItemView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.MotorItemView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.PluginItemView">
+            <summary>
+            Interaction logic for InputItemView.xaml
+            </summary>
+            <summary>
+            PluginItemView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.PluginItemView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.MotorListItemView">
+            <summary>
+            Interaction logic for MotorListItemView.xaml
+            </summary>
+            <summary>
+            MotorListItemView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.MotorListItemView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.HapticWorkspace">
+            <summary>
+            Interaction logic for HapticWorkspace.xaml
+            </summary>
+            <summary>
+            HapticWorkspace
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.ArmSidePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.ArmSide"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.UpperLengthPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.UpperLength"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.ForeLengthPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.ForeLength"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.MinShoulderThetaPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.MinShoulderTheta"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.MaxShoulderThetaPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.MaxShoulderTheta"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.MinElbowThetaPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.MinElbowTheta"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.MaxElbowThetaPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.MaxElbowTheta"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.HapticsEnabledPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.HapticsEnabled"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HapticWorkspace.ForceGainPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HapticWorkspace.ForceGain"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.HapticWorkspace.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.ArmSide">
+            <summary>
+            Sets and gets the ArmSide property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.UpperLength">
+            <summary>
+            Sets and gets the UpperLength property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.ForeLength">
+            <summary>
+            Sets and gets the ForeLength property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.MinShoulderTheta">
+            <summary>
+            Sets and gets the MinShoulderTheta property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.MaxShoulderTheta">
+            <summary>
+            Sets and gets the MaxShoulderTheta property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.MinElbowTheta">
+            <summary>
+            Sets and gets the MinElbowTheta property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.MaxElbowTheta">
+            <summary>
+            Sets and gets the MaxElbowTheta property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.HapticsEnabled">
+            <summary>
+            Sets and gets the HapticsEnabled property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HapticWorkspace.ForceGain">
+            <summary>
+            Sets and gets the ForceGain property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.JointLimits">
+            <summary>
+            Interaction logic for HapticWorkspace.xaml
+            </summary>
+            <summary>
+            JointLimits
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.JointLimits.LimitsEnablePropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.JointLimits.LimitsEnable"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.JointLimits.MinShoulderDegPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.JointLimits.MinShoulderDeg"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.JointLimits.MaxShoulderDegPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.JointLimits.MaxShoulderDeg"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.JointLimits.MinElbowDegPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.JointLimits.MinElbowDeg"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.JointLimits.MaxElbowDegPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.JointLimits.MaxElbowDeg"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.JointLimits.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.JointLimits.LimitsEnable">
+            <summary>
+            Sets and gets the LimitsEnable property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.JointLimits.MinShoulderDeg">
+            <summary>
+            Sets and gets the MinShoulderDeg property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.JointLimits.MaxShoulderDeg">
+            <summary>
+            Sets and gets the MaxShoulderDeg property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.JointLimits.MinElbowDeg">
+            <summary>
+            Sets and gets the MinElbowDeg property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.JointLimits.MaxElbowDeg">
+            <summary>
+            Sets and gets the MaxElbowDeg property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.Kinematics">
+            <summary>
+            Interaction logic for Kinematics.xaml
+            </summary>
+            <summary>
+            Kinematics
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.Kinematics.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.LouMaster">
+            <summary>
+            Interaction logic for LouMaster.xaml
+            </summary>
+            <summary>
+            LouMaster
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.LouMaster.LinkToRobotPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.LouMaster.LinkToRobot"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.LouMaster.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.LouMaster.LinkToRobot">
+            <summary>
+            Sets and gets the LinkTorRobot property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.NetworkGeomagicTouch">
+            <summary>
+            Interaction logic for NetworkGeomagicTouchConfigurationView.xaml
+            </summary>
+            <summary>
+            NetworkGeomagicTouch
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.NetworkGeomagicTouch.#ctor">
+            <summary>
+            Constructs a new NetworkGeomagicTouch View Model
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.NetworkGeomagicTouch.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.HomePosition">
+            <summary>
+            Interaction logic for PositionOffset.xaml
+            </summary>
+            <summary>
+            HomePosition
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HomePosition.HomeZPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HomePosition.HomeZ"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HomePosition.HomeYPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HomePosition.HomeY"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.HomePosition.HomeXPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.HomePosition.HomeX"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.HomePosition.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HomePosition.ResetHomeAbilityCommand">
+            <summary>
+            Gets the ResetHomePositionCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HomePosition.ResetHomeCommand">
+            <summary>
+            Gets the SetOffsetCommand.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HomePosition.HomeZ">
+            <summary>
+            Sets and gets the OffsetZ property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HomePosition.HomeY">
+            <summary>
+            Sets and gets the OffsetY property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.HomePosition.HomeX">
+            <summary>
+            Sets and gets the OffsetX property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.Scale">
+            <summary>
+            Description for Scale.
+            </summary>
+            <summary>
+            Scale
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.Scale.#ctor">
+            <summary>
+            Initializes a new instance of the Scale class.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.Scale.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.SphereBarrier">
+            <summary>
+            Interaction logic for HapticWorkspace.xaml
+            </summary>
+            <summary>
+            SphereBarrier
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.SphereBarrier.ForceGainPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.SphereBarrier.ForceGain"/> property's name.
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.SphereBarrier.HapticsEnabledPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.SphereBarrier.HapticsEnabled"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.SphereBarrier.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.SphereBarrier.ForceGain">
+            <summary>
+            Sets and gets the ForceGain property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.SphereBarrier.HapticsEnabled">
+            <summary>
+            Sets and gets the HapticsEnabled property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.Plugins.TreehopperPluginView">
+            <summary>
+            Interaction logic for TreehopperPluginView.xaml
+            </summary>
+            <summary>
+            TreehopperPluginView
+            </summary>
+        </member>
+        <member name="F:RobotApp.Views.Plugins.TreehopperPluginView.ConnectedBoardPropertyName">
+            <summary>
+            The <see cref="P:RobotApp.Views.Plugins.TreehopperPluginView.ConnectedBoard"/> property's name.
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.Plugins.TreehopperPluginView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="P:RobotApp.Views.Plugins.TreehopperPluginView.ConnectedBoard">
+            <summary>
+            Sets and gets the ConnectedBoard property.
+            Changes to that property's value raise the PropertyChanged event. 
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.SerialTransportView">
+            <summary>
+            Interaction logic for SerialTransportView.xaml
+            </summary>
+            <summary>
+            SerialTransportView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.SerialTransportView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.SettingsAppearance">
+            <summary>
+            Interaction logic for SettingsAppearance.xaml
+            </summary>
+            <summary>
+            SettingsAppearance
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.SettingsAppearance.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.SignalSourceView">
+            <summary>
+            Interaction logic for SignalSourceView.xaml
+            </summary>
+            <summary>
+            SignalSourceView
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.SignalSourceView.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Views.StatusBar">
+            <summary>
+            Interaction logic for StatusBar.xaml
+            </summary>
+            <summary>
+            StatusBar
+            </summary>
+        </member>
+        <member name="M:RobotApp.Views.StatusBar.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.App">
+            <summary>
+            Interaction logic for App.xaml
+            </summary>
+            <summary>
+            App
+            </summary>
+        </member>
+        <member name="M:RobotApp.App.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:RobotApp.App.Main">
+            <summary>
+            Application Entry Point.
+            </summary>
+        </member>
+        <member name="T:RobotApp.MainWindow">
+            <summary>
+            Interaction logic for MainWindow.xaml
+            </summary>
+            <summary>
+            MainWindow
+            </summary>
+        </member>
+        <member name="M:RobotApp.MainWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:RobotApp.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:RobotApp.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,124 @@
+﻿using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace RobotApp.Views.Plugins
+{
+    /// <summary>
+    /// Interaction logic for Clutch.xaml
+    /// </summary>
+    public partial class Clutch : PluginBase
+    {
+        double offsetX, offsetY, offsetZ;
+        double clutchStartPositionX, clutchStartPositionY, clutchStartPositionZ;
+        bool clutchIsEnabled;
+
+        private RelayCommand resetOffsetsCommand;
+
+        /// <summary>
+        /// Gets the ResetOffsetsCommand.
+        /// </summary>
+        public RelayCommand ResetOffsetsCommand
+        {
+            get
+            {
+                return resetOffsetsCommand
+                    ?? (resetOffsetsCommand = new RelayCommand(
+                    () =>
+                    {
+                        offsetX = 0;
+                        offsetY = 0;
+                        offsetZ = 0;
+                    }));
+            }
+        }
+
+        public bool ClutchIsEnabled 
+        {
+            get { return clutchIsEnabled; }
+            set {
+                if (value == clutchIsEnabled)
+                    return;
+
+                clutchIsEnabled = value;
+
+                if(clutchIsEnabled == true)
+                {
+                    clutchStartPositionX = Inputs["X"].Value;
+                    clutchStartPositionY = Inputs["Y"].Value;
+                    clutchStartPositionZ = Inputs["Z"].Value;
+                }
+                if(clutchIsEnabled == false)
+                {
+                    // We transitioned from off to on. Look at the last input and set
+                    // that as our offset.
+                    offsetX -= Inputs["X"].Value - clutchStartPositionX;
+                    offsetY -= Inputs["Y"].Value - clutchStartPositionY;
+                    offsetZ -= Inputs["Z"].Value - clutchStartPositionZ;
+
+                }
+                
+                this.RaisePropertyChanged("ClutchIsEnabled");
+                    
+
+            } 
+        }
+        public Clutch()
+        {
+            this.TypeName = "Clutch";
+            InitializeComponent();
+            clutchIsEnabled = false;
+
+            /// OUTPUTS
+            Outputs.Add("X", new ViewModel.OutputSignalViewModel("X"));
+            Outputs.Add("Y", new ViewModel.OutputSignalViewModel("Y"));
+            Outputs.Add("Z", new ViewModel.OutputSignalViewModel("Z"));
+
+            /// X input
+            Inputs.Add("X", new ViewModel.InputSignalViewModel("X", this.InstanceName,
+                (value) =>
+                {
+                    if (!ClutchIsEnabled)
+                        Outputs["X"].Value = value + offsetX;
+                }
+            ));
+
+            /// Y input
+            Inputs.Add("Y", new ViewModel.InputSignalViewModel("Y", this.InstanceName,
+                (value) =>
+                {
+                    if (!ClutchIsEnabled)
+                        Outputs["Y"].Value = value + offsetY;
+                }
+            ));
+
+            /// Z input
+            Inputs.Add("Z", new ViewModel.InputSignalViewModel("Z", this.InstanceName,
+                (value) =>
+                {
+                    if (!ClutchIsEnabled)
+                        Outputs["Z"].Value = value + offsetZ;
+                }
+            ));
+
+            Inputs.Add("Clutch", new ViewModel.InputSignalViewModel("Clutch", this.InstanceName,
+                (value) =>
+                {
+                    ClutchIsEnabled = value > 0.5 ? true : false;
+                }
+            ));
+        }
+    }
+}

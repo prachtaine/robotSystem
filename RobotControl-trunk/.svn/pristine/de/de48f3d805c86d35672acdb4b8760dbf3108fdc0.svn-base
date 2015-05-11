@@ -1,0 +1,178 @@
+﻿using GalaSoft.MvvmLight.Command;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace RobotApp.Views.Plugins
+{
+    /// <summary>
+    /// Interaction logic for AccelerationLimits.xaml
+    /// </summary>
+    public partial class AccelerationLimits : PluginBase
+    {
+        double[] LeftArm = new double[6];
+        double[] RightArm = new double[6];
+        double dbLeftForearmTwist;
+
+        double AccelerationLimit = 10;
+        double ADCcountsPerDegree = .15;
+        bool linktoRobot = false;
+
+        System.Timers.Timer Timer = new System.Timers.Timer();
+
+        public bool LinktoRobot 
+        {
+            get { return linktoRobot; }
+            set {
+                if (value == linktoRobot)
+                    return;
+
+                linktoRobot = value;
+
+                this.RaisePropertyChanged("LinktoRobot");
+            } 
+        }
+
+        public AccelerationLimits()
+        {
+            this.TypeName = "AccelerationLimits";
+            this.InstanceName = "AccelerationLimited";
+
+            /// OUTPUTS
+            Outputs.Add("LeftForearmTwist", new ViewModel.OutputSignalViewModel("Left Forearm Twist"));
+            Outputs.Add("LeftForearmTrigger", new ViewModel.OutputSignalViewModel("Left Forearm Trigger"));
+            Outputs.Add("LeftElbow", new ViewModel.OutputSignalViewModel("Left Elbow"));
+            Outputs.Add("LeftUpperArmTwist", new ViewModel.OutputSignalViewModel("Left Upper Arm Twist"));
+            Outputs.Add("LeftShoulderVertical", new ViewModel.OutputSignalViewModel("Left Shoulder Vertical"));
+            Outputs.Add("LeftShoulderHorizontal", new ViewModel.OutputSignalViewModel("Left Shoulder Horizontal"));
+
+            Outputs.Add("RightForearmTwist", new ViewModel.OutputSignalViewModel("Right Forearm Twist"));
+            Outputs.Add("RightForearmTrigger", new ViewModel.OutputSignalViewModel("Right Forearm Trigger"));
+            Outputs.Add("RightElbow", new ViewModel.OutputSignalViewModel("Right Elbow"));
+            Outputs.Add("RightUpperArmTwist", new ViewModel.OutputSignalViewModel("Right Upper Arm Twist"));
+            Outputs.Add("RightShoulderVertical", new ViewModel.OutputSignalViewModel("Right Shoulder Vertical"));
+            Outputs.Add("RightShoulderHorizontal", new ViewModel.OutputSignalViewModel("Right Shoulder Horizontal"));
+
+            InitializeComponent();
+            linktoRobot = false;
+
+            /// INPUTS
+            Inputs.Add("RightForearmTwist", new ViewModel.InputSignalViewModel("RightForearmTwist", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot)
+                    {
+                        Outputs["RightForearmTwist"].Value = value;
+                        dbLeftForearmTwist = value;
+                    }
+                }
+            ));
+            Inputs.Add("RightForearmTrigger", new ViewModel.InputSignalViewModel("RightForearmTrigger", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["RightForearmTrigger"].Value = value;
+                }
+            ));
+            Inputs.Add("RightElbow", new ViewModel.InputSignalViewModel("RightElbow", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["RightElbow"].Value = value;
+                }
+            ));
+            Inputs.Add("RightUpperArmTwist", new ViewModel.InputSignalViewModel("RightUpperArmTwist", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["RightUpperArmTwist"].Value = value;
+                }
+            ));
+            Inputs.Add("RightShoulderHorizontal", new ViewModel.InputSignalViewModel("RightShoulderHorizontal", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["RightShoulderHorizontal"].Value = value;
+                }
+            ));
+            Inputs.Add("RightShoulderVertical", new ViewModel.InputSignalViewModel("RightShoulderVertical", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["RightShoulderVertical"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftForearmTwist", new ViewModel.InputSignalViewModel("LeftForearmTwist", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftForearmTwist"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftForearmTrigger", new ViewModel.InputSignalViewModel("LeftForearmTrigger", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftForearmTrigger"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftElbow", new ViewModel.InputSignalViewModel("LeftElbow", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftElbow"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftUpperArmTwist", new ViewModel.InputSignalViewModel("LeftUpperArmTwist", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftUpperArmTwist"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftShoulderVertical", new ViewModel.InputSignalViewModel("LeftShoulderVertical", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftShoulderVertical"].Value = value;
+                }
+            ));
+            Inputs.Add("LeftShoulderHorizontal", new ViewModel.InputSignalViewModel("LeftShoulderHorizontal", this.InstanceName,
+                (value) =>
+                {
+                    if (linktoRobot) Outputs["LeftShoulderHorizontal"].Value = value;
+                }
+            ));
+
+            Timer.Interval = 100;
+            Timer.Elapsed += Timer_Elapsed;
+            Timer.Start();
+        }
+
+        void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (linktoRobot)
+            {
+                Outputs["LeftForearmTwist"].Value = dbLeftForearmTwist;
+                //Outputs["LeftForearmGrabber"].Value = LeftForearm.Read(Ltc2305Channels.Channel1);
+
+                //Outputs["LeftUpperArmTwist"].Value = LeftElbow.Read(Ltc2305Channels.Channel0);
+                //Outputs["LeftElbow"].Value = LeftElbow.Read(Ltc2305Channels.Channel1);
+
+                //Outputs["LeftShoulderVertical"].Value = LeftShoulder.Read(Ltc2305Channels.Channel0);
+                //Outputs["LeftShoulderHorizontal"].Value = LeftShoulder.Read(Ltc2305Channels.Channel1);
+
+                //Outputs["RightForearm"].Value = RightForearm.Read(Ltc2305Channels.Channel0);
+                //Outputs["RightForearmGrabber"].Value = RightForearm.Read(Ltc2305Channels.Channel1);
+
+                //Outputs["RightElbow"].Value = RightElbow.Read(Ltc2305Channels.Channel1);
+                //Outputs["RightUpperArmTwist"].Value = RightElbow.Read(Ltc2305Channels.Channel0);
+
+                //Outputs["RightShoulderVertical"].Value = RightShoulder.Read(Ltc2305Channels.Channel1);
+                //Outputs["RightShoulderHorizontal"].Value = RightShoulder.Read(Ltc2305Channels.Channel0);
+
+            }
+        }
+    }
+}

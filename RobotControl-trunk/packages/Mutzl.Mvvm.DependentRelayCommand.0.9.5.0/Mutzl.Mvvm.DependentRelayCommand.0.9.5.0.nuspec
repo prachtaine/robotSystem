@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Mutzl.Mvvm.DependentRelayCommand</id>
+    <version>0.9.5.0</version>
+    <title>MVVM Light DependentRelayCommand (PCL)</title>
+    <authors>Thomas Mutzl</authors>
+    <owners>Thomas Mutzl</owners>
+    <licenseUrl>http://mvvmlight.codeplex.com/license</licenseUrl>
+    <projectUrl>http://www.mutzl.com/2014/02/a-smart-mvvm-command/</projectUrl>
+    <iconUrl>https://mutzl.blob.core.windows.net/assets/mvvmlight.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extends the RelayCommand of the MVVM Light Toolkit. Fires the CanExecuteChanged event for the command automatically if a PropertyChanged event of a dependent property was fired.</description>
+    <releaseNotes />
+    <copyright>Copyright 2014 Thomas Mutzl</copyright>
+    <language>en-US</language>
+    <tags>mvvm mvvmlight command relaycommand galasoft mutzl</tags>
+    <dependencies>
+      <group targetFramework=".NETPortable0.0-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+      <group targetFramework="Windows8.0">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+      <group targetFramework="Windows8.1">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+      <group targetFramework="WindowsPhone8.0">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+      <group targetFramework="WindowsPhone8.1">
+        <dependency id="Portable.MvvmLightLibs" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
