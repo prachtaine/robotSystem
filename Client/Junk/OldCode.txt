@@ -1,0 +1,111 @@
+﻿private void setSpringForcesOnSlave(Double xDifference, Double yDifference, Double zDifference)
+        {
+            double forceX = 0;
+            double forceY = 0;
+            double forceZ = 0;
+            if (((SpringForceTrackBar.Value / 1000.0) + .001) > 0 && ((SpringForceTrackBar.Value / 1000.0) + .001) < .12)
+            {
+                forceX = ((SpringForceTrackBar.Value / 1000.0) + .001) * xDifference;
+                forceY = ((SpringForceTrackBar.Value / 1000.0) + .001) * yDifference;
+                forceZ = ((SpringForceTrackBar.Value / 1000.0) + .001) * zDifference;
+            }
+            else
+            {
+                StatusUpdateLabel.Text = "Error in function setSpringForcesOnSlave();";
+            }
+
+            int maxForce = 2;
+
+            if (forceX < maxForce && forceY < maxForce && forceZ < maxForce)
+            {
+                setForce2(forceX, forceY, forceZ);
+            }
+            else
+            {
+                if (forceX < maxForce && forceY < maxForce && forceZ >= maxForce)
+                {
+                    setForce2(forceX, forceY, maxForce);
+                }
+                else if (forceX < maxForce && forceY >= maxForce && forceZ < maxForce)
+                {
+                    setForce2(forceX, maxForce, forceZ);
+                }
+                else if (forceX < maxForce && forceY >= maxForce && forceZ >= maxForce)
+                {
+                    setForce2(forceX, maxForce, maxForce);
+                }
+                else if (forceX >= maxForce && forceY < maxForce && forceZ < maxForce)
+                {
+                    setForce2(maxForce, forceY, forceZ);
+                }
+                else if (forceX >= maxForce && forceY < maxForce && forceZ >= maxForce)
+                {
+                    setForce2(maxForce, forceY, maxForce);
+                }
+                else if (forceX >= maxForce && forceY >= maxForce && forceZ < maxForce)
+                {
+                    setForce2(maxForce, maxForce, forceZ);
+                }
+                else if (forceX >= maxForce && forceY >= maxForce && forceZ >= maxForce)
+                {
+                    setForce2(maxForce, maxForce, maxForce);
+                }
+                else
+                {
+                    StatusUpdateLabel.Text = "Error in force control!";
+                    setForce2(0, 0, 0);
+                    GetMyPositionTimer.Enabled = false;
+                }
+            }
+
+        }
+
+
+
+
+
+		Double[,] array = new Double[1010, 3];
+        int position = 0;
+        int count = 0;
+
+
+		if (position == 1000)
+            {
+                position = 0;
+            }
+            else if (position < 1000)
+            {
+                array[position, 0] = pos1[0];
+                array[position, 1] = pos1[1];
+                array[position, 2] = pos1[2];
+                position++;
+            }
+
+
+		/////////////////////////////////// force omni2(right) to spot of omni1(left)////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            LatencyIndicatorLabel.Text = (((4 * LatencyTrackBar.Value) / 1000.0) + .01).ToString() + " seconds";
+            SpringForceIndicatorLabel.Text = (((SpringForceTrackBar.Value / 1000.0) + .001) * 2.0).ToString();
+
+            if (count < ((((4 * LatencyTrackBar.Value) / 1000.0) + .01) * 100) + 100)
+            {
+                count++;
+            }
+            if (count > ((((4 * LatencyTrackBar.Value) / 1000.0) + .01) * 100))
+            {
+                int delayedPosition = (int)(position - ((((4 * LatencyTrackBar.Value) / 1000.0) + .01) * 100) - 1);
+                if (delayedPosition < 0)
+                {
+                    delayedPosition = delayedPosition + 1000;
+                }
+                Double xDifference;
+                Double yDifference;
+                Double zDifference;
+
+                xDifference = array[delayedPosition, 0] - pos2[0];
+                yDifference = array[delayedPosition, 1] - pos2[1];
+                zDifference = array[delayedPosition, 2] - pos2[2];
+
+                setSpringForcesOnSlave(xDifference, yDifference, zDifference);
+            }
