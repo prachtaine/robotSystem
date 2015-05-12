@@ -1,23 +1,23 @@
-﻿C:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\obj\Debug\GeneratedInternalTypeHelper.g.cs
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\App.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\MainWindow.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Pages\Configuration\Connection.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Pages\Configuration\ControllerConfiguration.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Pages\Configuration\PluginConfiguration.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Pages\Settings\Settings.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\ControllerItemView.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\AccelerationLimits.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\Clutch.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\EnableDisablePluginView.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\GeomagicTouch.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\HapticWorkspace.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\JointLimits.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\Kinematics.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\HomePosition.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\LouMaster.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\NetworkGeomagicTouch.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\Scale.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\SphereBarrier.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\Plugins\TreehopperPluginView.xaml;;
-FC:\Users\TATRC\Documents\Visual Studio 2013\Projects\RobotControl-trunk\RobotApp\Views\SettingsAppearance.xaml;;
+﻿C:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\obj\Debug\GeneratedInternalTypeHelper.g.cs
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\App.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\MainWindow.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Pages\Configuration\Connection.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Pages\Configuration\ControllerConfiguration.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Pages\Configuration\PluginConfiguration.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Pages\Settings\Settings.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\ControllerItemView.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\AccelerationLimits.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\Clutch.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\EnableDisablePluginView.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\GeomagicTouch.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\HapticWorkspace.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\JointLimits.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\Kinematics.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\HomePosition.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\LouMaster.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\NetworkGeomagicTouch.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\Scale.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\SphereBarrier.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\Plugins\TreehopperPluginView.xaml;;
+FC:\Users\TATRC\Documents\APsource\RobotControl-trunk\RobotApp\Views\SettingsAppearance.xaml;;
 

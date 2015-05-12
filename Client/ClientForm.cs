@@ -19,7 +19,7 @@ namespace Client
     public partial class ClientForm : Form
     {
         //absolute path of dll
-        const string address = @"C:\Users\TATRC\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\Client\newphantom.dll";
+        const string address = "newphantom.dll";
 
         [DllImport(address, CallingConvention = CallingConvention.Cdecl)]
         public static extern int initAndSchedule(string leftOmni, string rightOmni);
@@ -272,7 +272,7 @@ namespace Client
             //talkerSocket = new TalkerSocket("137.197.202.93", masterListeningPort);
             //talkerSocket = new TalkerSocket("129.93.23.187", masterListeningPort);
             talkerSocket = new TalkerSocket("129.93.8.92", masterListeningPort);
-            //canSend = true;
+            canSend = true;
             StatusLabel.Text = "---";
             SocketMessage socketMessage = new SocketMessage();
 
