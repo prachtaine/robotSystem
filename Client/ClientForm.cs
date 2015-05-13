@@ -55,12 +55,10 @@ namespace Client
         [DllImport(address, CallingConvention = CallingConvention.Cdecl)]
         public static extern int ReleaseMemory(IntPtr ptr);
 
-        //sockets
-        ListenerSocket socketListener = new ListenerSocket();
-        TalkerSocket talkerSocket;
+        TalkerSocket talkerSocket = null;
+        ListenerSocket listenerSocket = null;
         bool canSend = false;
-        int listeningPort = 11000;
-        int sendingPort = 12000;
+        int port = 12000;
         bool enableForceFeedback = false;
 
         double forceOffset_LX = 0;
@@ -116,7 +114,7 @@ namespace Client
                 if (cb_isMaster.Checked && !tb_ipAddress.Text.Equals(""))
                 {
                     //start sending omni info
-                    talkerSocket = new TalkerSocket(tb_ipAddress.Text, sendingPort);
+                    talkerSocket = new TalkerSocket(tb_ipAddress.Text, port);
                     canSend = true;
                 }
                 else if (cb_isMaster.Checked && tb_ipAddress.Text.Equals(""))
@@ -217,12 +215,12 @@ namespace Client
 
                 ReleaseMemory(ptr2);
 
-                double forceLX = (socketListener.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / 50;
-                double forceLY = (socketListener.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / 50;
-                double forceLZ = (socketListener.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / 50;
-                double forceRX = (socketListener.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / 50;
-                double forceRY = (socketListener.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / 50;
-                double forceRZ = (socketListener.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / 50;
+                double forceLX = (listenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / 50;
+                double forceLY = (listenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / 50;
+                double forceLZ = (listenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / 50;
+                double forceRX = (listenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / 50;
+                double forceRY = (listenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / 50;
+                double forceRZ = (listenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / 50;
 
                 setForce1(forceLX, forceLY, forceLZ);
                 setForce2(forceRX, forceRY, forceRZ);
@@ -243,8 +241,8 @@ namespace Client
         private void ConnectToMasterButtonClick(object sender, EventArgs e)
         {
             //listen for master
-            ListenerSocket listener = new ListenerSocket(listeningPort, this);
-            listener.StartListening();
+            listenerSocket = new ListenerSocket(port, this);
+            listenerSocket.StartListening();
         }
 
         String GetIP()
@@ -301,14 +299,14 @@ namespace Client
             ReleaseMemory(ptr2);
 
             //other left omni
-            double remotePos_LX = socketListener.SocketMessage.XOmniLeft;
-            double remotePos_LY = socketListener.SocketMessage.YOmniLeft;
-            double remotePos_LZ = socketListener.SocketMessage.ZOmniLeft;
+            double remotePos_LX = listenerSocket.SocketMessage.XOmniLeft;
+            double remotePos_LY = listenerSocket.SocketMessage.YOmniLeft;
+            double remotePos_LZ = listenerSocket.SocketMessage.ZOmniLeft;
 
             //other right omni
-            double remotePos_RX = socketListener.SocketMessage.XOmniRight;
-            double remotePos_RY = socketListener.SocketMessage.YOmniRight;
-            double remotePos_RZ = socketListener.SocketMessage.ZOmniRight;
+            double remotePos_RX = listenerSocket.SocketMessage.XOmniRight;
+            double remotePos_RY = listenerSocket.SocketMessage.YOmniRight;
+            double remotePos_RZ = listenerSocket.SocketMessage.ZOmniRight;
 
             forceOffset_LX = pos1[0] - remotePos_LX;
             forceOffset_LY = pos1[1] - remotePos_LY;
