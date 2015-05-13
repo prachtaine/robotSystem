@@ -206,7 +206,7 @@ namespace Client
 
         private void setForces()
         {
-            if (ConnectToMasterButton.Enabled)
+            if (!cb_isMaster.Checked && ConnectToMasterButton.Enabled)
             {
                 MessageBox.Show("There is no connection to a master!");
             }
