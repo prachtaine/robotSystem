@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.StartMasterConsoleButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lbInk2 = new System.Windows.Forms.Label();
@@ -48,10 +47,12 @@
             this.lbX1value = new System.Windows.Forms.Label();
             this.lbY1value = new System.Windows.Forms.Label();
             this.lbZ1value = new System.Windows.Forms.Label();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.timer = new System.Windows.Forms.Timer();
             this.RightandLeftRecievedOmniData = new System.Windows.Forms.GroupBox();
             this.User1Label = new System.Windows.Forms.Label();
             this.User2Label = new System.Windows.Forms.Label();
+            this.cb_ForceEnable = new System.Windows.Forms.CheckBox();
+            this.btn_zeroForces = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.RightandLeftRecievedOmniData.SuspendLayout();
@@ -280,11 +281,34 @@
             this.User2Label.Text = "User2";
             this.User2Label.UseCompatibleTextRendering = true;
             // 
+            // cb_ForceEnable
+            // 
+            this.cb_ForceEnable.AutoSize = true;
+            this.cb_ForceEnable.Location = new System.Drawing.Point(12, 346);
+            this.cb_ForceEnable.Name = "cb_ForceEnable";
+            this.cb_ForceEnable.Size = new System.Drawing.Size(104, 17);
+            this.cb_ForceEnable.TabIndex = 43;
+            this.cb_ForceEnable.Text = "Force Feedback";
+            this.cb_ForceEnable.UseVisualStyleBackColor = true;
+            this.cb_ForceEnable.CheckedChanged += new System.EventHandler(this.cb_ForceEnable_CheckedChanged);
+            // 
+            // btn_zeroForces
+            // 
+            this.btn_zeroForces.Location = new System.Drawing.Point(408, 346);
+            this.btn_zeroForces.Name = "btn_zeroForces";
+            this.btn_zeroForces.Size = new System.Drawing.Size(75, 23);
+            this.btn_zeroForces.TabIndex = 51;
+            this.btn_zeroForces.Text = "Zero";
+            this.btn_zeroForces.UseVisualStyleBackColor = true;
+            this.btn_zeroForces.Click += new System.EventHandler(this.btn_zeroForces_Click);
+            // 
             // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(502, 374);
+            this.ClientSize = new System.Drawing.Size(502, 412);
+            this.Controls.Add(this.btn_zeroForces);
+            this.Controls.Add(this.cb_ForceEnable);
             this.Controls.Add(this.User2Label);
             this.Controls.Add(this.User1Label);
             this.Controls.Add(this.RightandLeftRecievedOmniData);
@@ -326,6 +350,8 @@
         private System.Windows.Forms.GroupBox RightandLeftRecievedOmniData;
         private System.Windows.Forms.Label User1Label;
         private System.Windows.Forms.Label User2Label;
+        private System.Windows.Forms.CheckBox cb_ForceEnable;
+        private System.Windows.Forms.Button btn_zeroForces;
     }
 }
 

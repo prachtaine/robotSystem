@@ -23,3 +23,11 @@ C:\Users\Jordan\Desktop\GeomagicTouchRobotSystem\GeomagicTouchRobotSystem\obj\De
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\GeomagicTouchRobotSystem.exe.config
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.exe
 C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.pdb
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\GeomagicTouchRobotSystem.exe
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\GeomagicTouchRobotSystem.pdb
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\Newtonsoft.Json.dll
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\bin\Debug\Newtonsoft.Json.xml
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\MasterController.csprojResolveAssemblyReference.cache
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.MasterForm.resources
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\GeomagicTouchRobotSystem.Properties.Resources.resources
+C:\Users\TATRC\Documents\APsource\GeomagicTouchRobotSystem\obj\Debug\MasterController.csproj.GenerateResource.Cache

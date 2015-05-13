@@ -54,20 +54,15 @@
             this.spLeftOmni = new System.Windows.Forms.ComboBox();
             this.UnderlyingTimer = new System.Windows.Forms.Timer(this.components);
             this.ConnectToMasterButton = new System.Windows.Forms.Button();
-            this.MasterIPTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.StatusLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
-            this.SimulateConnectToMasterButton = new System.Windows.Forms.Button();
-            this.checkBoxInvertX = new System.Windows.Forms.CheckBox();
-            this.checkBoxInvertY = new System.Windows.Forms.CheckBox();
-            this.checkBoxInvertZ = new System.Windows.Forms.CheckBox();
-            this.ResetHomeButton = new System.Windows.Forms.Button();
             this.cb_forceEnable = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tb_forces = new System.Windows.Forms.TextBox();
             this.btn_zeroForces = new System.Windows.Forms.Button();
+            this.cb_isMaster = new System.Windows.Forms.CheckBox();
+            this.lbl_myIP = new System.Windows.Forms.Label();
+            this.tb_ipAddress = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -83,7 +78,7 @@
             this.groupBox2.Controls.Add(this.lbX2Value);
             this.groupBox2.Controls.Add(this.lbY2Value);
             this.groupBox2.Controls.Add(this.lbZ2Value);
-            this.groupBox2.Location = new System.Drawing.Point(345, 115);
+            this.groupBox2.Location = new System.Drawing.Point(217, 120);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(172, 138);
             this.groupBox2.TabIndex = 37;
@@ -172,7 +167,7 @@
             this.groupBox1.Controls.Add(this.lbX1value);
             this.groupBox1.Controls.Add(this.lbY1value);
             this.groupBox1.Controls.Add(this.lbZ1value);
-            this.groupBox1.Location = new System.Drawing.Point(137, 115);
+            this.groupBox1.Location = new System.Drawing.Point(9, 120);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(172, 138);
             this.groupBox1.TabIndex = 35;
@@ -253,9 +248,9 @@
             // 
             // btStop
             // 
-            this.btStop.Location = new System.Drawing.Point(10, 75);
+            this.btStop.Location = new System.Drawing.Point(9, 264);
             this.btStop.Name = "btStop";
-            this.btStop.Size = new System.Drawing.Size(121, 74);
+            this.btStop.Size = new System.Drawing.Size(380, 54);
             this.btStop.TabIndex = 34;
             this.btStop.Text = "Initialize Omnis";
             this.btStop.UseVisualStyleBackColor = true;
@@ -264,20 +259,20 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(342, 72);
+            this.label5.Location = new System.Drawing.Point(271, 77);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(95, 13);
+            this.label5.Size = new System.Drawing.Size(59, 13);
             this.label5.TabIndex = 33;
-            this.label5.Text = "Right Omni (Slave)";
+            this.label5.Text = "Right Omni";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(134, 72);
+            this.label4.Location = new System.Drawing.Point(70, 77);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 13);
+            this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 32;
-            this.label4.Text = "Left Omni (Master)";
+            this.label4.Text = "Left Omni";
             // 
             // spRightOmni
             // 
@@ -286,7 +281,7 @@
             "Omni_Left",
             "Omni_Right",
             "None"});
-            this.spRightOmni.Location = new System.Drawing.Point(345, 88);
+            this.spRightOmni.Location = new System.Drawing.Point(240, 93);
             this.spRightOmni.Name = "spRightOmni";
             this.spRightOmni.Size = new System.Drawing.Size(121, 21);
             this.spRightOmni.TabIndex = 31;
@@ -297,7 +292,7 @@
             this.spLeftOmni.Items.AddRange(new object[] {
             "Omni_Left",
             "Omni_Right"});
-            this.spLeftOmni.Location = new System.Drawing.Point(137, 88);
+            this.spLeftOmni.Location = new System.Drawing.Point(38, 93);
             this.spLeftOmni.Name = "spLeftOmni";
             this.spLeftOmni.Size = new System.Drawing.Size(121, 21);
             this.spLeftOmni.TabIndex = 30;
@@ -309,43 +304,18 @@
             // 
             // ConnectToMasterButton
             // 
-            this.ConnectToMasterButton.Location = new System.Drawing.Point(10, 166);
+            this.ConnectToMasterButton.Location = new System.Drawing.Point(9, 318);
             this.ConnectToMasterButton.Name = "ConnectToMasterButton";
-            this.ConnectToMasterButton.Size = new System.Drawing.Size(121, 74);
+            this.ConnectToMasterButton.Size = new System.Drawing.Size(380, 58);
             this.ConnectToMasterButton.TabIndex = 38;
             this.ConnectToMasterButton.Text = "Connect To Master";
             this.ConnectToMasterButton.UseVisualStyleBackColor = true;
             this.ConnectToMasterButton.Click += new System.EventHandler(this.ConnectToMasterButtonClick);
             // 
-            // MasterIPTextBox
-            // 
-            this.MasterIPTextBox.Location = new System.Drawing.Point(183, 16);
-            this.MasterIPTextBox.Name = "MasterIPTextBox";
-            this.MasterIPTextBox.Size = new System.Drawing.Size(126, 20);
-            this.MasterIPTextBox.TabIndex = 39;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(170, 13);
-            this.label1.TabIndex = 40;
-            this.label1.Text = "IP Address of the Master Controller";
-            // 
-            // StatusLabel
-            // 
-            this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(7, 44);
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(16, 13);
-            this.StatusLabel.TabIndex = 41;
-            this.StatusLabel.Text = "---";
-            // 
             // NameLabel
             // 
             this.NameLabel.AutoSize = true;
-            this.NameLabel.Location = new System.Drawing.Point(336, 19);
+            this.NameLabel.Location = new System.Drawing.Point(171, 35);
             this.NameLabel.Name = "NameLabel";
             this.NameLabel.Size = new System.Drawing.Size(52, 13);
             this.NameLabel.TabIndex = 42;
@@ -353,68 +323,15 @@
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(394, 16);
+            this.NameTextBox.Location = new System.Drawing.Point(127, 51);
             this.NameTextBox.Name = "NameTextBox";
             this.NameTextBox.Size = new System.Drawing.Size(141, 20);
             this.NameTextBox.TabIndex = 43;
             // 
-            // SimulateConnectToMasterButton
-            // 
-            this.SimulateConnectToMasterButton.Location = new System.Drawing.Point(10, 246);
-            this.SimulateConnectToMasterButton.Name = "SimulateConnectToMasterButton";
-            this.SimulateConnectToMasterButton.Size = new System.Drawing.Size(121, 73);
-            this.SimulateConnectToMasterButton.TabIndex = 44;
-            this.SimulateConnectToMasterButton.Text = "Simulate Fake Connect To Master";
-            this.SimulateConnectToMasterButton.UseVisualStyleBackColor = true;
-            this.SimulateConnectToMasterButton.Click += new System.EventHandler(this.SimulateFakeConnectToMasterClick);
-            // 
-            // checkBoxInvertX
-            // 
-            this.checkBoxInvertX.AutoSize = true;
-            this.checkBoxInvertX.Location = new System.Drawing.Point(137, 291);
-            this.checkBoxInvertX.Name = "checkBoxInvertX";
-            this.checkBoxInvertX.Size = new System.Drawing.Size(60, 17);
-            this.checkBoxInvertX.TabIndex = 45;
-            this.checkBoxInvertX.Text = "InvertX";
-            this.checkBoxInvertX.UseVisualStyleBackColor = true;
-            this.checkBoxInvertX.CheckedChanged += new System.EventHandler(this.InvertCheckChanged);
-            // 
-            // checkBoxInvertY
-            // 
-            this.checkBoxInvertY.AutoSize = true;
-            this.checkBoxInvertY.Location = new System.Drawing.Point(137, 314);
-            this.checkBoxInvertY.Name = "checkBoxInvertY";
-            this.checkBoxInvertY.Size = new System.Drawing.Size(60, 17);
-            this.checkBoxInvertY.TabIndex = 46;
-            this.checkBoxInvertY.Text = "InvertY";
-            this.checkBoxInvertY.UseVisualStyleBackColor = true;
-            this.checkBoxInvertY.CheckedChanged += new System.EventHandler(this.InvertCheckChanged);
-            // 
-            // checkBoxInvertZ
-            // 
-            this.checkBoxInvertZ.AutoSize = true;
-            this.checkBoxInvertZ.Location = new System.Drawing.Point(137, 337);
-            this.checkBoxInvertZ.Name = "checkBoxInvertZ";
-            this.checkBoxInvertZ.Size = new System.Drawing.Size(60, 17);
-            this.checkBoxInvertZ.TabIndex = 47;
-            this.checkBoxInvertZ.Text = "InvertZ";
-            this.checkBoxInvertZ.UseVisualStyleBackColor = true;
-            this.checkBoxInvertZ.CheckedChanged += new System.EventHandler(this.InvertCheckChanged);
-            // 
-            // ResetHomeButton
-            // 
-            this.ResetHomeButton.Location = new System.Drawing.Point(137, 259);
-            this.ResetHomeButton.Name = "ResetHomeButton";
-            this.ResetHomeButton.Size = new System.Drawing.Size(75, 23);
-            this.ResetHomeButton.TabIndex = 48;
-            this.ResetHomeButton.Text = "ResetHome";
-            this.ResetHomeButton.UseVisualStyleBackColor = true;
-            this.ResetHomeButton.Click += new System.EventHandler(this.ResetHomeButtonClick);
-            // 
             // cb_forceEnable
             // 
             this.cb_forceEnable.AutoSize = true;
-            this.cb_forceEnable.Location = new System.Drawing.Point(239, 263);
+            this.cb_forceEnable.Location = new System.Drawing.Point(25, 387);
             this.cb_forceEnable.Name = "cb_forceEnable";
             this.cb_forceEnable.Size = new System.Drawing.Size(94, 17);
             this.cb_forceEnable.TabIndex = 49;
@@ -425,9 +342,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.tb_forces);
-            this.groupBox3.Location = new System.Drawing.Point(239, 286);
+            this.groupBox3.Location = new System.Drawing.Point(18, 410);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(278, 90);
+            this.groupBox3.Size = new System.Drawing.Size(358, 90);
             this.groupBox3.TabIndex = 36;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Forces";
@@ -438,38 +355,61 @@
             this.tb_forces.Multiline = true;
             this.tb_forces.Name = "tb_forces";
             this.tb_forces.ReadOnly = true;
-            this.tb_forces.Size = new System.Drawing.Size(265, 72);
+            this.tb_forces.Size = new System.Drawing.Size(345, 72);
             this.tb_forces.TabIndex = 0;
             // 
             // btn_zeroForces
             // 
-            this.btn_zeroForces.Location = new System.Drawing.Point(442, 269);
+            this.btn_zeroForces.Location = new System.Drawing.Point(290, 383);
             this.btn_zeroForces.Name = "btn_zeroForces";
-            this.btn_zeroForces.Size = new System.Drawing.Size(75, 23);
+            this.btn_zeroForces.Size = new System.Drawing.Size(80, 23);
             this.btn_zeroForces.TabIndex = 50;
             this.btn_zeroForces.Text = "Zero";
             this.btn_zeroForces.UseVisualStyleBackColor = true;
             this.btn_zeroForces.Click += new System.EventHandler(this.btn_zeroForces_Click);
+            // 
+            // cb_isMaster
+            // 
+            this.cb_isMaster.AutoSize = true;
+            this.cb_isMaster.Location = new System.Drawing.Point(12, 12);
+            this.cb_isMaster.Name = "cb_isMaster";
+            this.cb_isMaster.Size = new System.Drawing.Size(92, 17);
+            this.cb_isMaster.TabIndex = 51;
+            this.cb_isMaster.Text = "Set As Master";
+            this.cb_isMaster.UseVisualStyleBackColor = true;
+            this.cb_isMaster.CheckedChanged += new System.EventHandler(this.cb_isMaster_CheckedChanged);
+            // 
+            // lbl_myIP
+            // 
+            this.lbl_myIP.AutoSize = true;
+            this.lbl_myIP.Location = new System.Drawing.Point(159, 13);
+            this.lbl_myIP.Name = "lbl_myIP";
+            this.lbl_myIP.Size = new System.Drawing.Size(75, 13);
+            this.lbl_myIP.TabIndex = 52;
+            this.lbl_myIP.Text = "My IP Address";
+            // 
+            // tb_ipAddress
+            // 
+            this.tb_ipAddress.BackColor = System.Drawing.SystemColors.Window;
+            this.tb_ipAddress.Location = new System.Drawing.Point(265, 9);
+            this.tb_ipAddress.Name = "tb_ipAddress";
+            this.tb_ipAddress.Size = new System.Drawing.Size(127, 20);
+            this.tb_ipAddress.TabIndex = 53;
             // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(615, 388);
+            this.ClientSize = new System.Drawing.Size(404, 526);
+            this.Controls.Add(this.tb_ipAddress);
+            this.Controls.Add(this.lbl_myIP);
+            this.Controls.Add(this.cb_isMaster);
             this.Controls.Add(this.btn_zeroForces);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.cb_forceEnable);
-            this.Controls.Add(this.ResetHomeButton);
-            this.Controls.Add(this.checkBoxInvertZ);
-            this.Controls.Add(this.checkBoxInvertY);
-            this.Controls.Add(this.checkBoxInvertX);
-            this.Controls.Add(this.SimulateConnectToMasterButton);
             this.Controls.Add(this.NameTextBox);
             this.Controls.Add(this.NameLabel);
-            this.Controls.Add(this.StatusLabel);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.MasterIPTextBox);
             this.Controls.Add(this.ConnectToMasterButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -519,20 +459,15 @@
         private System.Windows.Forms.ComboBox spLeftOmni;
         private System.Windows.Forms.Timer UnderlyingTimer;
         private System.Windows.Forms.Button ConnectToMasterButton;
-        private System.Windows.Forms.TextBox MasterIPTextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label StatusLabel;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.TextBox NameTextBox;
-        private System.Windows.Forms.Button SimulateConnectToMasterButton;
-        private System.Windows.Forms.CheckBox checkBoxInvertX;
-        private System.Windows.Forms.CheckBox checkBoxInvertY;
-        private System.Windows.Forms.CheckBox checkBoxInvertZ;
-        private System.Windows.Forms.Button ResetHomeButton;
         private System.Windows.Forms.CheckBox cb_forceEnable;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox tb_forces;
         private System.Windows.Forms.Button btn_zeroForces;
+        private System.Windows.Forms.CheckBox cb_isMaster;
+        private System.Windows.Forms.Label lbl_myIP;
+        private System.Windows.Forms.TextBox tb_ipAddress;
     }
 }
 

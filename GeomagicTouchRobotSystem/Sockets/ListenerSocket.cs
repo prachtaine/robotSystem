@@ -88,21 +88,19 @@ namespace MasterController.Sockets
         }
 
 
-        String GetIP()
+        public String GetIP()
         {
-            String strHostName = Dns.GetHostName();
-
-            // Find host by name
-            IPHostEntry iphostentry = Dns.GetHostByName(strHostName);
-
-            // Grab the first IP addresses
-            String IPStr = "";
-            foreach (IPAddress ipaddress in iphostentry.AddressList)
+            string ipAddress = "";
+            IPHostEntry host;
+            host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
             {
-                IPStr = ipaddress.ToString();
-                return IPStr;
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    ipAddress = ip.ToString();
+                }
             }
-            return IPStr;
+            return ipAddress;
         }
     }
 
