@@ -206,10 +206,6 @@ namespace Client
 
         private void setForces()
         {
-            if (!cb_isMaster.Checked && ConnectToMasterButton.Enabled)
-            {
-                MessageBox.Show("There is no connection to a master!");
-            }
             if (enableForceFeedback && dataListenerSocket != null)
             {
                 IntPtr ptr = getpos1();
@@ -343,6 +339,10 @@ namespace Client
 
         private void cb_forceEnable_CheckedChanged(object sender, EventArgs e)
         {
+            if (!cb_isMaster.Checked && ConnectToMasterButton.Enabled)
+            {
+                MessageBox.Show("There is no connection to a master!");
+            }
             enableForceFeedback = cb_forceEnable.Checked;
         }
 
