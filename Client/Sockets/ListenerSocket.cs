@@ -71,6 +71,10 @@ namespace Client.Sockets
                 //update omni
                 this.SocketMessage = recievedObject;
             }
+            else if (recievedObject.MessageType == "Handshake")
+            {
+                _clientForm.handshakeReceived(recievedObject);
+            }
         }
 
 

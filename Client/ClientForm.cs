@@ -56,10 +56,12 @@ namespace Client
         [DllImport(address, CallingConvention = CallingConvention.Cdecl)]
         public static extern int ReleaseMemory(IntPtr ptr);
 
-        TalkerSocket talkerSocket = null;
-        ListenerSocket listenerSocket = null;
-        bool canSend = false;
-        int port = 12000;
+
+        ListenerSocket dataListenerSocket = null;
+        List<string> slaveIPAddresses = new List<string>();
+        bool masterInitialized = false;
+        int hsPort = 11000; //handshake port
+        int dataPort = 12000;
         bool enableForceFeedback = false;
 
         double forceOffset_LX = 0;
@@ -73,7 +75,6 @@ namespace Client
         {
             InitializeComponent();
             ClientForm.CheckForIllegalCrossThreadCalls = false;
-            tb_ipAddress.Text = GetIP();
             fillOmniDDL();
             trb_forceStrength.Value = (int)((trb_forceStrength.Minimum + trb_forceStrength.Maximum) / 2); //set initial value of trackbar to average
         }
@@ -117,12 +118,10 @@ namespace Client
                 if (cb_isMaster.Checked && !tb_ipAddress.Text.Equals(""))
                 {
                     //start sending omni info
-                    talkerSocket = new TalkerSocket(tb_ipAddress.Text, port);
-                    canSend = true;
-                }
-                else if (cb_isMaster.Checked && tb_ipAddress.Text.Equals(""))
-                {
-                    MessageBox.Show("Please enter an IP address to send to.");
+                    masterInitialized = true;
+                    //start listening for any clients
+                    ListenerSocket newClientListener = new ListenerSocket(hsPort, this);
+                    newClientListener.StartListening();
                 }
             }
         }
@@ -168,8 +167,8 @@ namespace Client
             lbButtons2.Text = "Buttons : " + pos2[6].ToString();
             lbInk2.Text = "InkWell : " + pos2[7].ToString();
 
-            //populate socketmessagetoSend if it is to be sent with Left omni position
-            if (canSend)
+            //build messageToSend if master has been initialized
+            if (masterInitialized)
             {
                 SocketMessage messageToSend = new SocketMessage();
                 messageToSend.MessageType = "OmniMessage";
@@ -185,7 +184,6 @@ namespace Client
                 messageToSend.ButtonsLeft = pos1[6];
                 messageToSend.InkwellLeft = pos1[7];
 
-                //populate socketmessagetoSend with Right omni position
                 messageToSend.XOmniRight = oldPosition.rightX;
                 messageToSend.YOmniRight = oldPosition.rightY;
                 messageToSend.ZOmniRight = oldPosition.rightZ;
@@ -197,14 +195,22 @@ namespace Client
                 messageToSend.ButtonsRight = pos2[6];
                 messageToSend.InkwellRight = pos2[7];
 
-                //finally send the built message
-                talkerSocket.sendData(messageToSend);
+                //finally send the built message to all connected slaves
+                foreach (string address in slaveIPAddresses)
+                {
+                    TalkerSocket ts = new TalkerSocket(address, dataPort);
+                    ts.sendData(messageToSend);
+                }
             }
         }
 
         private void setForces()
         {
-            if (enableForceFeedback)
+            if (ConnectToMasterButton.Enabled)
+            {
+                MessageBox.Show("There is no connection to a master!");
+            }
+            if (enableForceFeedback && dataListenerSocket != null)
             {
                 IntPtr ptr = getpos1();
                 double[] pos1 = new double[8];
@@ -218,12 +224,12 @@ namespace Client
 
                 ReleaseMemory(ptr2);
 
-                double forceLX = (listenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / getForceStrength();
-                double forceLY = (listenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / getForceStrength();
-                double forceLZ = (listenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / getForceStrength();
-                double forceRX = (listenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / getForceStrength();
-                double forceRY = (listenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / getForceStrength();
-                double forceRZ = (listenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / getForceStrength();
+                double forceLX = (dataListenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / getForceStrength();
+                double forceLY = (dataListenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / getForceStrength();
+                double forceLZ = (dataListenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / getForceStrength();
+                double forceRX = (dataListenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / getForceStrength();
+                double forceRY = (dataListenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / getForceStrength();
+                double forceRZ = (dataListenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / getForceStrength();
 
                 setForce1(forceLX, forceLY, forceLZ);
                 setForce2(forceRX, forceRY, forceRZ);
@@ -266,10 +272,35 @@ namespace Client
 
         private void ConnectToMasterButtonClick(object sender, EventArgs e)
         {
-            //listen for master
-            listenerSocket = new ListenerSocket(port, this);
-            listenerSocket.StartListening();
+            //Send IP Address to master
+            TalkerSocket ts = new TalkerSocket(tb_ipAddress.Text, hsPort);
+            SocketMessage sMessage = new SocketMessage();
+            sMessage.MessageType = "Handshake";
+            sMessage.IpAddress = GetIP();
+            ts.sendData(sMessage);
+
+            //listen for response from master
+            ListenerSocket responseListener = new ListenerSocket(hsPort, this);
+            responseListener.StartListening();
+
             ConnectToMasterButton.Enabled = false;
+        }
+
+        internal void handshakeReceived(SocketMessage message)
+        {
+            if (cb_isMaster.Checked)
+            {
+                slaveIPAddresses.Add(message.IpAddress);
+                SocketMessage returnMessage = new SocketMessage();
+                returnMessage.MessageType = "Handshake";
+            }
+            else
+            {
+                dataListenerSocket = new ListenerSocket(dataPort, this);
+                dataListenerSocket.StartListening();
+                
+                MessageBox.Show("Connection Successful!");
+            }
         }
 
         private void fillOmniDDL()
@@ -310,23 +341,6 @@ namespace Client
  
         HomePosition homePosition = new HomePosition();
 
-        private void ResetHomeButtonClick(object sender, EventArgs e)
-        {
-            IntPtr ptr = getpos1();
-            double[] pos1 = new double[8];
-            Marshal.Copy(ptr, pos1, 0, 8);
-
-            ReleaseMemory(ptr);
-
-            IntPtr ptr2 = getpos2();
-            double[] pos2 = new double[8];
-            Marshal.Copy(ptr2, pos2, 0, 8);
-
-            ReleaseMemory(ptr2);
-            Coordinate oldxyz = new Coordinate(pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
-            homePosition.resetHome(oldxyz);
-        }
-
         private void cb_forceEnable_CheckedChanged(object sender, EventArgs e)
         {
             enableForceFeedback = cb_forceEnable.Checked;
@@ -347,14 +361,14 @@ namespace Client
             ReleaseMemory(ptr2);
 
             //other left omni
-            double remotePos_LX = listenerSocket.SocketMessage.XOmniLeft;
-            double remotePos_LY = listenerSocket.SocketMessage.YOmniLeft;
-            double remotePos_LZ = listenerSocket.SocketMessage.ZOmniLeft;
+            double remotePos_LX = dataListenerSocket.SocketMessage.XOmniLeft;
+            double remotePos_LY = dataListenerSocket.SocketMessage.YOmniLeft;
+            double remotePos_LZ = dataListenerSocket.SocketMessage.ZOmniLeft;
 
             //other right omni
-            double remotePos_RX = listenerSocket.SocketMessage.XOmniRight;
-            double remotePos_RY = listenerSocket.SocketMessage.YOmniRight;
-            double remotePos_RZ = listenerSocket.SocketMessage.ZOmniRight;
+            double remotePos_RX = dataListenerSocket.SocketMessage.XOmniRight;
+            double remotePos_RY = dataListenerSocket.SocketMessage.YOmniRight;
+            double remotePos_RZ = dataListenerSocket.SocketMessage.ZOmniRight;
 
             forceOffset_LX = pos1[0] - remotePos_LX;
             forceOffset_LY = pos1[1] - remotePos_LY;
@@ -369,9 +383,9 @@ namespace Client
             if (cb_isMaster.Checked)
             {
                 //user wants to be master
-                lbl_myIP.Text = "Send to IP Address";
-                tb_ipAddress.ReadOnly = false;
-                tb_ipAddress.Text = "";
+                lbl_myIP.Text = "My IP Address";
+                tb_ipAddress.ReadOnly = true;
+                tb_ipAddress.Text = GetIP();
                 ConnectToMasterButton.Visible = false;
                 cb_forceEnable.Visible = false;
                 btn_zeroForces.Visible = false;
@@ -379,18 +393,21 @@ namespace Client
                 groupBox3.Visible = false;
                 cb_forceEnable.Checked = false;
                 enableForceFeedback = false;
+                lbl_forceStrength.Visible = false;
                 trb_forceStrength.Visible = false;
             }
             else
             {
-                lbl_myIP.Text = "My IP Address";
-                tb_ipAddress.ReadOnly = true;
-                tb_ipAddress.Text = GetIP();
+                lbl_myIP.Text = "Master's IP Address";
+                tb_ipAddress.ReadOnly = false;
+                tb_ipAddress.Text = "";
                 ConnectToMasterButton.Visible = true;
                 cb_forceEnable.Visible = true;
                 btn_zeroForces.Visible = true;
                 tb_forces.Visible = true;
                 groupBox3.Visible = true;
+                lbl_forceStrength.Visible = true;
+                trb_forceStrength.Visible = true;
             }
         }
 

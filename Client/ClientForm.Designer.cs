@@ -380,9 +380,9 @@
             this.lbl_myIP.AutoSize = true;
             this.lbl_myIP.Location = new System.Drawing.Point(159, 13);
             this.lbl_myIP.Name = "lbl_myIP";
-            this.lbl_myIP.Size = new System.Drawing.Size(75, 13);
+            this.lbl_myIP.Size = new System.Drawing.Size(100, 13);
             this.lbl_myIP.TabIndex = 52;
-            this.lbl_myIP.Text = "My IP Address";
+            this.lbl_myIP.Text = "Master\'s IP Address";
             // 
             // tb_ipAddress
             // 
@@ -402,7 +402,7 @@
             // lbl_forceStrength
             // 
             this.lbl_forceStrength.AutoSize = true;
-            this.lbl_forceStrength.Location = new System.Drawing.Point(159, 503);
+            this.lbl_forceStrength.Location = new System.Drawing.Point(159, 506);
             this.lbl_forceStrength.Name = "lbl_forceStrength";
             this.lbl_forceStrength.Size = new System.Drawing.Size(77, 13);
             this.lbl_forceStrength.TabIndex = 55;
