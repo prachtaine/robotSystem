@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -73,6 +74,7 @@ namespace Client
             InitializeComponent();
             ClientForm.CheckForIllegalCrossThreadCalls = false;
             tb_ipAddress.Text = GetIP();
+            fillOmniDDL();
         }
 
         private void InitializeOmnis_Click(object sender, EventArgs e)
@@ -199,7 +201,7 @@ namespace Client
             }
         }
 
-        void setForces()
+        private void setForces()
         {
             if (enableForceFeedback)
             {
@@ -215,12 +217,12 @@ namespace Client
 
                 ReleaseMemory(ptr2);
 
-                double forceLX = (listenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / 50;
-                double forceLY = (listenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / 50;
-                double forceLZ = (listenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / 50;
-                double forceRX = (listenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / 50;
-                double forceRY = (listenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / 50;
-                double forceRZ = (listenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / 50;
+                double forceLX = (listenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / getForceStrength();
+                double forceLY = (listenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / getForceStrength();
+                double forceLZ = (listenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / getForceStrength();
+                double forceRX = (listenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / getForceStrength();
+                double forceRY = (listenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / getForceStrength();
+                double forceRZ = (listenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / getForceStrength();
 
                 setForce1(forceLX, forceLY, forceLZ);
                 setForce2(forceRX, forceRY, forceRZ);
@@ -230,6 +232,29 @@ namespace Client
                 setForce1(0, 0, 0);
                 setForce2(0, 0, 0);
             }
+        }
+
+        private int getForceStrength()
+        {
+            //want force divider between 20 and 220
+            //divider = 220 - trackbarValue 
+
+            trb_forceStrength.Minimum = 0;
+            trb_forceStrength.Maximum = 200;
+
+            // The TickFrequency property establishes how many positions 
+            // are between each tick-mark.
+            trb_forceStrength.TickFrequency = 20;
+
+            // The LargeChange property sets how many positions to move 
+            // if the bar is clicked on either side of the slider.
+            trb_forceStrength.LargeChange = 2;
+
+            // The SmallChange property sets how many positions to move 
+            // if the keyboard arrows are used to move the slider.
+            trb_forceStrength.SmallChange = 1;
+
+            return 220 - trb_forceStrength.Value;
         }
 
         private void UnderlyingTimerTick(object sender, EventArgs e)
@@ -243,6 +268,29 @@ namespace Client
             //listen for master
             listenerSocket = new ListenerSocket(port, this);
             listenerSocket.StartListening();
+            ConnectToMasterButton.Enabled = false;
+        }
+
+        private void fillOmniDDL()
+        {
+            string[] omnis = GetGeomagicDevices();
+            spLeftOmni.DataSource = omnis;
+            spRightOmni.DataSource = omnis;
+        }
+
+        string[] GetGeomagicDevices()
+        {
+            string[] fileNames = new string[1];
+            try
+            {
+                fileNames = Directory.GetFiles(@"C:\Users\Public\Documents\SensAble\", "*.config");
+                for (int i = 0; i < fileNames.Length; i++)
+                {
+                    fileNames[i] = Path.GetFileNameWithoutExtension(fileNames[i]);
+                }
+            }
+            catch { }
+            return fileNames;
         }
 
         String GetIP()

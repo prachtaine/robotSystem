@@ -63,9 +63,12 @@
             this.cb_isMaster = new System.Windows.Forms.CheckBox();
             this.lbl_myIP = new System.Windows.Forms.Label();
             this.tb_ipAddress = new System.Windows.Forms.TextBox();
+            this.trb_forceStrength = new System.Windows.Forms.TrackBar();
+            this.lbl_forceStrength = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trb_forceStrength)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -277,10 +280,6 @@
             // spRightOmni
             // 
             this.spRightOmni.FormattingEnabled = true;
-            this.spRightOmni.Items.AddRange(new object[] {
-            "Omni_Left",
-            "Omni_Right",
-            "None"});
             this.spRightOmni.Location = new System.Drawing.Point(240, 93);
             this.spRightOmni.Name = "spRightOmni";
             this.spRightOmni.Size = new System.Drawing.Size(121, 21);
@@ -289,9 +288,6 @@
             // spLeftOmni
             // 
             this.spLeftOmni.FormattingEnabled = true;
-            this.spLeftOmni.Items.AddRange(new object[] {
-            "Omni_Left",
-            "Omni_Right"});
             this.spLeftOmni.Location = new System.Drawing.Point(38, 93);
             this.spLeftOmni.Name = "spLeftOmni";
             this.spLeftOmni.Size = new System.Drawing.Size(121, 21);
@@ -396,12 +392,30 @@
             this.tb_ipAddress.Size = new System.Drawing.Size(127, 20);
             this.tb_ipAddress.TabIndex = 53;
             // 
+            // trb_forceStrength
+            // 
+            this.trb_forceStrength.Location = new System.Drawing.Point(9, 515);
+            this.trb_forceStrength.Name = "trb_forceStrength";
+            this.trb_forceStrength.Size = new System.Drawing.Size(380, 40);
+            this.trb_forceStrength.TabIndex = 54;
+            // 
+            // lbl_forceStrength
+            // 
+            this.lbl_forceStrength.AutoSize = true;
+            this.lbl_forceStrength.Location = new System.Drawing.Point(159, 503);
+            this.lbl_forceStrength.Name = "lbl_forceStrength";
+            this.lbl_forceStrength.Size = new System.Drawing.Size(77, 13);
+            this.lbl_forceStrength.TabIndex = 55;
+            this.lbl_forceStrength.Text = "Force Strength";
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(404, 526);
+            this.ClientSize = new System.Drawing.Size(404, 559);
+            this.Controls.Add(this.lbl_forceStrength);
+            this.Controls.Add(this.trb_forceStrength);
             this.Controls.Add(this.tb_ipAddress);
             this.Controls.Add(this.lbl_myIP);
             this.Controls.Add(this.cb_isMaster);
@@ -427,6 +441,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trb_forceStrength)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,6 +483,8 @@
         private System.Windows.Forms.CheckBox cb_isMaster;
         private System.Windows.Forms.Label lbl_myIP;
         private System.Windows.Forms.TextBox tb_ipAddress;
+        private System.Windows.Forms.TrackBar trb_forceStrength;
+        private System.Windows.Forms.Label lbl_forceStrength;
     }
 }
 
