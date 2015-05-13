@@ -273,9 +273,8 @@ namespace Client
 
         private void fillOmniDDL()
         {
-            string[] omnis = GetGeomagicDevices();
-            spLeftOmni.DataSource = omnis;
-            spRightOmni.DataSource = omnis;
+            spLeftOmni.DataSource = GetGeomagicDevices();
+            spRightOmni.DataSource = GetGeomagicDevices();
         }
 
         string[] GetGeomagicDevices()
