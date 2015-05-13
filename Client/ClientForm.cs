@@ -75,6 +75,7 @@ namespace Client
             ClientForm.CheckForIllegalCrossThreadCalls = false;
             tb_ipAddress.Text = GetIP();
             fillOmniDDL();
+            trb_forceStrength.Value = (int)((trb_forceStrength.Minimum + trb_forceStrength.Maximum) / 2); //set initial value of trackbar to average
         }
 
         private void InitializeOmnis_Click(object sender, EventArgs e)
@@ -378,6 +379,7 @@ namespace Client
                 groupBox3.Visible = false;
                 cb_forceEnable.Checked = false;
                 enableForceFeedback = false;
+                trb_forceStrength.Visible = false;
             }
             else
             {
