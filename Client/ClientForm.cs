@@ -286,9 +286,14 @@ namespace Client
         {
             if (cb_isMaster.Checked)
             {
+                //save slave address
                 slaveIPAddresses.Add(message.IpAddress);
+                //send success message back
+                TalkerSocket ts = new TalkerSocket(message.IpAddress, hsPort);
                 SocketMessage returnMessage = new SocketMessage();
                 returnMessage.MessageType = "Handshake";
+                returnMessage.IpAddress = GetIP();
+                ts.sendData(returnMessage);
             }
             else
             {
