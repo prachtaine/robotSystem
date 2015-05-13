@@ -76,7 +76,20 @@ namespace Client
             InitializeComponent();
             ClientForm.CheckForIllegalCrossThreadCalls = false;
             fillOmniDDL();
-            trb_forceStrength.Value = (int)((trb_forceStrength.Minimum + trb_forceStrength.Maximum) / 2); //set initial value of trackbar to average
+
+            //Set Force Trackbar
+            //want force divider between 20 and 220
+            //divider = 220 - trackbarValue 
+            trb_forceStrength.Minimum = 0;
+            trb_forceStrength.Maximum = 200;
+            // The TickFrequency property establishes how many positions are between each tick-mark.
+            trb_forceStrength.TickFrequency = 20;
+            // The LargeChange property sets how many positions to move if the bar is clicked on either side of the slider.
+            trb_forceStrength.LargeChange = 2;
+            // The SmallChange property sets how many positions to move if the keyboard arrows are used to move the slider.
+            trb_forceStrength.SmallChange = 1;
+            //set initial value of trackbar
+            trb_forceStrength.Value = 170; 
         }
 
         private void InitializeOmnis_Click(object sender, EventArgs e)
@@ -124,6 +137,8 @@ namespace Client
                     newClientListener.StartListening();
                 }
             }
+            //do not allow switching between master and slave state once omnis are initialized
+            cb_isMaster.Enabled = false;
         }
 
         private void sendData()
@@ -196,10 +211,17 @@ namespace Client
                 messageToSend.InkwellRight = pos2[7];
 
                 //finally send the built message to all connected slaves
-                foreach (string address in slaveIPAddresses)
+                try
                 {
-                    TalkerSocket ts = new TalkerSocket(address, dataPort);
-                    ts.sendData(messageToSend);
+                    foreach (string address in slaveIPAddresses)
+                    {
+                        TalkerSocket ts = new TalkerSocket(address, dataPort);
+                        ts.sendData(messageToSend);
+                    }
+                }
+                catch (Exception)
+                {
+                    //assume a client as disconnected
                 }
             }
         }
@@ -239,24 +261,6 @@ namespace Client
 
         private int getForceStrength()
         {
-            //want force divider between 20 and 220
-            //divider = 220 - trackbarValue 
-
-            trb_forceStrength.Minimum = 0;
-            trb_forceStrength.Maximum = 200;
-
-            // The TickFrequency property establishes how many positions 
-            // are between each tick-mark.
-            trb_forceStrength.TickFrequency = 20;
-
-            // The LargeChange property sets how many positions to move 
-            // if the bar is clicked on either side of the slider.
-            trb_forceStrength.LargeChange = 2;
-
-            // The SmallChange property sets how many positions to move 
-            // if the keyboard arrows are used to move the slider.
-            trb_forceStrength.SmallChange = 1;
-
             return 220 - trb_forceStrength.Value;
         }
 
