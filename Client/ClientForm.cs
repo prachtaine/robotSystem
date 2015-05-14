@@ -89,12 +89,18 @@ namespace Client
             // The SmallChange property sets how many positions to move if the keyboard arrows are used to move the slider.
             trb_forceStrength.SmallChange = 1;
             //set initial value of trackbar
-            trb_forceStrength.Value = 170; 
+            trb_forceStrength.Value = 170;
         }
 
         private void InitializeOmnis_Click(object sender, EventArgs e)
         {
-            if (spRightOmni.SelectedIndex == -1 && spLeftOmni.SelectedIndex == -1)
+            if (cb_noOmnisAttached.Checked)
+            {
+                cb_noOmnisAttached.Enabled = false;
+                btStop.Enabled = false;
+                UnderlyingTimer.Enabled = true;
+            }
+            else if (spRightOmni.SelectedIndex == -1 && spLeftOmni.SelectedIndex == -1)
             {
                 MessageBox.Show("Both the Left and Right Omni's need to be selected");
             }
@@ -143,22 +149,69 @@ namespace Client
 
         private void sendData()
         {
-            IntPtr ptr = getpos1();
-            double[] pos1 = new double[8];
-            Marshal.Copy(ptr, pos1, 0, 8);
+            Coordinate oldPosition = new Coordinate(0, 0, 0, 0, 0, 0);
+            double[] pos1 = { 0, 0, 0, 0, 0, 0, 0, 0 };
+            double[] pos2 = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            ReleaseMemory(ptr);
+            if (!cb_noOmnisAttached.Checked)
+            {
+                IntPtr ptr = getpos1();
+                Marshal.Copy(ptr, pos1, 0, 8);
+                ReleaseMemory(ptr);
 
-            IntPtr ptr2 = getpos2();
-            double[] pos2 = new double[8];
-            Marshal.Copy(ptr2, pos2, 0, 8);
+                IntPtr ptr2 = getpos2();
+                Marshal.Copy(ptr2, pos2, 0, 8);
+                ReleaseMemory(ptr2);
 
-            ReleaseMemory(ptr2);
+                //home the position
+                oldPosition = new Coordinate(pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
+                //Coordinate homedPosition = homePosition.getPosition(oldPosition);
+                //Coordinate leftPositionWithBoundaries = RobotBarriers.GetBoundaryCoordinates(homedPosition);
 
-            //home the position
-            Coordinate oldPosition = new Coordinate(pos1[0], pos1[1], pos1[2], pos2[0], pos2[1], pos2[2]);
-            //Coordinate homedPosition = homePosition.getPosition(oldPosition);
-            //Coordinate leftPositionWithBoundaries = RobotBarriers.GetBoundaryCoordinates(homedPosition);
+
+                //build messageToSend if master has been initialized
+                if (masterInitialized)
+                {
+                    SocketMessage messageToSend = new SocketMessage();
+                    messageToSend.MessageType = "OmniMessage";
+
+                    messageToSend.XOmniLeft = oldPosition.leftX;
+                    messageToSend.YOmniLeft = oldPosition.leftY;
+                    messageToSend.ZOmniLeft = oldPosition.leftZ;
+
+                    messageToSend.Gimbal1OmniLeft = pos1[3];
+                    messageToSend.Gimbal2OmniLeft = pos1[4];
+                    messageToSend.Gimbal3OmniLeft = pos1[5];
+
+                    messageToSend.ButtonsLeft = pos1[6];
+                    messageToSend.InkwellLeft = pos1[7];
+
+                    messageToSend.XOmniRight = oldPosition.rightX;
+                    messageToSend.YOmniRight = oldPosition.rightY;
+                    messageToSend.ZOmniRight = oldPosition.rightZ;
+
+                    messageToSend.Gimbal1OmniRight = pos2[3];
+                    messageToSend.Gimbal2OmniRight = pos2[4];
+                    messageToSend.Gimbal3OmniRight = pos2[5];
+
+                    messageToSend.ButtonsRight = pos2[6];
+                    messageToSend.InkwellRight = pos2[7];
+
+                    //finally send the built message to all connected slaves
+                    try
+                    {
+                        foreach (string address in slaveIPAddresses)
+                        {
+                            TalkerSocket ts = new TalkerSocket(address, dataPort);
+                            ts.sendData(messageToSend);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //assume a client has disconnected
+                    }
+                }
+            }
 
             lbX1value.Text = "X : " + oldPosition.leftX.ToString();
             lbY1value.Text = "Y : " + oldPosition.leftY.ToString();
@@ -181,53 +234,17 @@ namespace Client
 
             lbButtons2.Text = "Buttons : " + pos2[6].ToString();
             lbInk2.Text = "InkWell : " + pos2[7].ToString();
-
-            //build messageToSend if master has been initialized
-            if (masterInitialized)
-            {
-                SocketMessage messageToSend = new SocketMessage();
-                messageToSend.MessageType = "OmniMessage";
-
-                messageToSend.XOmniLeft = oldPosition.leftX;
-                messageToSend.YOmniLeft = oldPosition.leftY;
-                messageToSend.ZOmniLeft = oldPosition.leftZ;
-
-                messageToSend.Gimbal1OmniLeft = pos1[3];
-                messageToSend.Gimbal2OmniLeft = pos1[4];
-                messageToSend.Gimbal3OmniLeft = pos1[5];
-
-                messageToSend.ButtonsLeft = pos1[6];
-                messageToSend.InkwellLeft = pos1[7];
-
-                messageToSend.XOmniRight = oldPosition.rightX;
-                messageToSend.YOmniRight = oldPosition.rightY;
-                messageToSend.ZOmniRight = oldPosition.rightZ;
-
-                messageToSend.Gimbal1OmniRight = pos2[3];
-                messageToSend.Gimbal2OmniRight = pos2[4];
-                messageToSend.Gimbal3OmniRight = pos2[5];
-
-                messageToSend.ButtonsRight = pos2[6];
-                messageToSend.InkwellRight = pos2[7];
-
-                //finally send the built message to all connected slaves
-                try
-                {
-                    foreach (string address in slaveIPAddresses)
-                    {
-                        TalkerSocket ts = new TalkerSocket(address, dataPort);
-                        ts.sendData(messageToSend);
-                    }
-                }
-                catch (Exception)
-                {
-                    //assume a client as disconnected
-                }
-            }
         }
 
         private void setForces()
         {
+            double forceLX = 0;
+            double forceLY = 0;
+            double forceLZ = 0;
+            double forceRX = 0;
+            double forceRY = 0;
+            double forceRZ = 0;
+
             if (enableForceFeedback && dataListenerSocket != null)
             {
                 IntPtr ptr = getpos1();
@@ -242,20 +259,32 @@ namespace Client
 
                 ReleaseMemory(ptr2);
 
-                double forceLX = (dataListenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / getForceStrength();
-                double forceLY = (dataListenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / getForceStrength();
-                double forceLZ = (dataListenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / getForceStrength();
-                double forceRX = (dataListenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / getForceStrength();
-                double forceRY = (dataListenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / getForceStrength();
-                double forceRZ = (dataListenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / getForceStrength();
+                forceLX = (dataListenerSocket.SocketMessage.XOmniLeft - (pos1[0] - forceOffset_LX)) / getForceStrength();
+                forceLY = (dataListenerSocket.SocketMessage.YOmniLeft - (pos1[1] - forceOffset_LY)) / getForceStrength();
+                forceLZ = (dataListenerSocket.SocketMessage.ZOmniLeft - (pos1[2] - forceOffset_LZ)) / getForceStrength();
+                forceRX = (dataListenerSocket.SocketMessage.XOmniRight - (pos2[0] - forceOffset_RX)) / getForceStrength();
+                forceRY = (dataListenerSocket.SocketMessage.YOmniRight - (pos2[1] - forceOffset_RY)) / getForceStrength();
+                forceRZ = (dataListenerSocket.SocketMessage.ZOmniRight - (pos2[2] - forceOffset_RZ)) / getForceStrength();
+            }
 
-                setForce1(forceLX, forceLY, forceLZ);
-                setForce2(forceRX, forceRY, forceRZ);
+            if (cb_noOmnisAttached.Checked)
+            {
+                if (dataListenerSocket != null)
+                { 
+                    forceLX = dataListenerSocket.SocketMessage.XOmniLeft;
+                    forceLY = dataListenerSocket.SocketMessage.YOmniLeft; 
+                    forceLZ = dataListenerSocket.SocketMessage.ZOmniLeft; 
+                    forceRX = dataListenerSocket.SocketMessage.XOmniRight;
+                    forceRY = dataListenerSocket.SocketMessage.YOmniRight;
+                    forceRZ = dataListenerSocket.SocketMessage.ZOmniRight;
+                }
+                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + forceLX + " Y = " + forceLY + " Z = " + forceLZ + Environment.NewLine + "Right" + Environment.NewLine + "X = " + forceRX + " Y = " + forceRY + " Z = " + forceRZ;
             }
             else
             {
-                setForce1(0, 0, 0);
-                setForce2(0, 0, 0);
+                setForce1(forceLX, forceLY, forceLZ);
+                setForce2(forceRX, forceRY, forceRZ);
+                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + forceLX + " Y = " + forceLY + " Z = " + forceLZ + Environment.NewLine + "Right" + Environment.NewLine + "X = " + forceRX + " Y = " + forceRY + " Z = " + forceRZ;
             }
         }
 
@@ -310,8 +339,11 @@ namespace Client
 
         private void fillOmniDDL()
         {
-            spLeftOmni.DataSource = GetGeomagicDevices();
-            spRightOmni.DataSource = GetGeomagicDevices();
+            if (!cb_noOmnisAttached.Checked)
+            {
+                spLeftOmni.DataSource = GetGeomagicDevices();
+                spRightOmni.DataSource = GetGeomagicDevices();
+            }
         }
 
         string[] GetGeomagicDevices()
@@ -348,11 +380,15 @@ namespace Client
 
         private void cb_forceEnable_CheckedChanged(object sender, EventArgs e)
         {
-            if (!cb_isMaster.Checked && ConnectToMasterButton.Enabled)
+            if (cb_forceEnable.Checked && !cb_isMaster.Checked && ConnectToMasterButton.Enabled)
             {
                 MessageBox.Show("There is no connection to a master!");
+                cb_forceEnable.Checked = false;
             }
-            enableForceFeedback = cb_forceEnable.Checked;
+            else
+            {
+                enableForceFeedback = cb_forceEnable.Checked;
+            }
         }
 
         private void btn_zeroForces_Click(object sender, EventArgs e)
@@ -417,6 +453,36 @@ namespace Client
                 groupBox3.Visible = true;
                 lbl_forceStrength.Visible = true;
                 trb_forceStrength.Visible = true;
+            }
+        }
+
+        private void cb_noOmnisAttached_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_noOmnisAttached.Checked)
+            {
+                cb_isMaster.Checked = false;
+                cb_isMaster.Enabled = false;
+                enableForceFeedback = false;
+                cb_forceEnable.Enabled = false;
+                groupBox3.Text = "Master's Position";
+                btn_zeroForces.Enabled = false;
+                lbl_myIP.Text = "Master's IP Address";
+                tb_ipAddress.ReadOnly = false;
+                tb_ipAddress.Text = "";
+                ConnectToMasterButton.Visible = true;
+                cb_forceEnable.Visible = true;
+                btn_zeroForces.Visible = true;
+                tb_forces.Visible = true;
+                groupBox3.Visible = true;
+                lbl_forceStrength.Visible = true;
+                trb_forceStrength.Visible = true;
+            }
+            else
+            {
+                cb_isMaster.Enabled = true;
+                cb_forceEnable.Enabled = true;
+                groupBox3.Text = "Forces";
+                btn_zeroForces.Enabled = true;
             }
         }
 

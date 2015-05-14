@@ -65,6 +65,7 @@
             this.tb_ipAddress = new System.Windows.Forms.TextBox();
             this.trb_forceStrength = new System.Windows.Forms.TrackBar();
             this.lbl_forceStrength = new System.Windows.Forms.Label();
+            this.cb_noOmnisAttached = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -408,12 +409,24 @@
             this.lbl_forceStrength.TabIndex = 55;
             this.lbl_forceStrength.Text = "Force Strength";
             // 
+            // cb_noOmnisAttached
+            // 
+            this.cb_noOmnisAttached.AutoSize = true;
+            this.cb_noOmnisAttached.Location = new System.Drawing.Point(12, 35);
+            this.cb_noOmnisAttached.Name = "cb_noOmnisAttached";
+            this.cb_noOmnisAttached.Size = new System.Drawing.Size(72, 17);
+            this.cb_noOmnisAttached.TabIndex = 56;
+            this.cb_noOmnisAttached.Text = "No Omnis";
+            this.cb_noOmnisAttached.UseVisualStyleBackColor = true;
+            this.cb_noOmnisAttached.CheckedChanged += new System.EventHandler(this.cb_noOmnisAttached_CheckedChanged);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(404, 559);
+            this.Controls.Add(this.cb_noOmnisAttached);
             this.Controls.Add(this.lbl_forceStrength);
             this.Controls.Add(this.trb_forceStrength);
             this.Controls.Add(this.tb_ipAddress);
@@ -485,6 +498,7 @@
         private System.Windows.Forms.TextBox tb_ipAddress;
         private System.Windows.Forms.TrackBar trb_forceStrength;
         private System.Windows.Forms.Label lbl_forceStrength;
+        private System.Windows.Forms.CheckBox cb_noOmnisAttached;
     }
 }
 
