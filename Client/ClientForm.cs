@@ -271,20 +271,20 @@ namespace Client
             {
                 if (dataListenerSocket != null)
                 {
-                    forceLX = Math.Round(dataListenerSocket.SocketMessage.XOmniLeft, 4);
-                    forceLY = Math.Round(dataListenerSocket.SocketMessage.YOmniLeft, 4);
-                    forceLZ = Math.Round(dataListenerSocket.SocketMessage.ZOmniLeft, 4);
-                    forceRX = Math.Round(dataListenerSocket.SocketMessage.XOmniRight, 4);
-                    forceRY = Math.Round(dataListenerSocket.SocketMessage.YOmniRight, 4);
-                    forceRZ = Math.Round(dataListenerSocket.SocketMessage.ZOmniRight, 4);
+                    forceLX = dataListenerSocket.SocketMessage.XOmniLeft;
+                    forceLY = dataListenerSocket.SocketMessage.YOmniLeft;
+                    forceLZ = dataListenerSocket.SocketMessage.ZOmniLeft;
+                    forceRX = dataListenerSocket.SocketMessage.XOmniRight;
+                    forceRY = dataListenerSocket.SocketMessage.YOmniRight;
+                    forceRZ = dataListenerSocket.SocketMessage.ZOmniRight;
                 }
-                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + forceLX + " Y = " + forceLY + " Z = " + forceLZ + Environment.NewLine + "Right" + Environment.NewLine + "X = " + forceRX + " Y = " + forceRY + " Z = " + forceRZ;
+                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + Math.Round(forceLX, 4) + " Y = " + Math.Round(forceLY, 4) + " Z = " + Math.Round(forceLZ, 4) + Environment.NewLine + "Right" + Environment.NewLine + "X = " + Math.Round(forceRX, 4) + " Y = " + Math.Round(forceRY, 4) + " Z = " + Math.Round(forceRZ, 4);
             }
             else
             {
                 setForce1(forceLX, forceLY, forceLZ);
                 setForce2(forceRX, forceRY, forceRZ);
-                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + forceLX + " Y = " + forceLY + " Z = " + forceLZ + Environment.NewLine + "Right" + Environment.NewLine + "X = " + forceRX + " Y = " + forceRY + " Z = " + forceRZ;
+                tb_forces.Text = @"Left" + Environment.NewLine + "X = " + Math.Round(forceLX, 4) + " Y = " + Math.Round(forceLY, 4) + " Z = " + Math.Round(forceLZ, 4) + Environment.NewLine + "Right" + Environment.NewLine + "X = " + Math.Round(forceRX, 4) + " Y = " + Math.Round(forceRY, 4) + " Z = " + Math.Round(forceRZ, 4);
             }
         }
 

@@ -32,3 +32,14 @@ C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.csprojResolveAssemblyR
 C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.ClientForm.resources
 C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.Properties.Resources.resources
 C:\Users\TATRC\Documents\APsource\Client\obj\Debug\Client.csproj.GenerateResource.Cache
+C:\Users\apracht2\Documents\APSource\Client\bin\Debug\Client.exe.config
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.exe
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.pdb
+C:\Users\apracht2\Documents\APSource\Client\bin\Debug\newphantom.dll
+C:\Users\apracht2\Documents\APSource\Client\bin\Debug\Client.exe
+C:\Users\apracht2\Documents\APSource\Client\bin\Debug\Client.pdb
+C:\Users\apracht2\Documents\APSource\Client\bin\Debug\Newtonsoft.Json.dll
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.csprojResolveAssemblyReference.cache
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.ClientForm.resources
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.Properties.Resources.resources
+C:\Users\apracht2\Documents\APSource\Client\obj\Debug\Client.csproj.GenerateResource.Cache
