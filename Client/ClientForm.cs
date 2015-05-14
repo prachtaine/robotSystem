@@ -270,13 +270,13 @@ namespace Client
             if (cb_noOmnisAttached.Checked)
             {
                 if (dataListenerSocket != null)
-                { 
-                    forceLX = dataListenerSocket.SocketMessage.XOmniLeft;
-                    forceLY = dataListenerSocket.SocketMessage.YOmniLeft; 
-                    forceLZ = dataListenerSocket.SocketMessage.ZOmniLeft; 
-                    forceRX = dataListenerSocket.SocketMessage.XOmniRight;
-                    forceRY = dataListenerSocket.SocketMessage.YOmniRight;
-                    forceRZ = dataListenerSocket.SocketMessage.ZOmniRight;
+                {
+                    forceLX = Math.Round(dataListenerSocket.SocketMessage.XOmniLeft, 4);
+                    forceLY = Math.Round(dataListenerSocket.SocketMessage.YOmniLeft, 4);
+                    forceLZ = Math.Round(dataListenerSocket.SocketMessage.ZOmniLeft, 4);
+                    forceRX = Math.Round(dataListenerSocket.SocketMessage.XOmniRight, 4);
+                    forceRY = Math.Round(dataListenerSocket.SocketMessage.YOmniRight, 4);
+                    forceRZ = Math.Round(dataListenerSocket.SocketMessage.ZOmniRight, 4);
                 }
                 tb_forces.Text = @"Left" + Environment.NewLine + "X = " + forceLX + " Y = " + forceLY + " Z = " + forceLZ + Environment.NewLine + "Right" + Environment.NewLine + "X = " + forceRX + " Y = " + forceRY + " Z = " + forceRZ;
             }
@@ -440,6 +440,7 @@ namespace Client
                 enableForceFeedback = false;
                 lbl_forceStrength.Visible = false;
                 trb_forceStrength.Visible = false;
+                cb_noOmnisAttached.Visible = false;
             }
             else
             {
@@ -453,6 +454,7 @@ namespace Client
                 groupBox3.Visible = true;
                 lbl_forceStrength.Visible = true;
                 trb_forceStrength.Visible = true;
+                cb_noOmnisAttached.Visible = true;
             }
         }
 
